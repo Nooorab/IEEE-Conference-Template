@@ -12,30 +12,20 @@
 \title{A Forensic Analysis of Metadata Leakage in Swedish Public Documents}
 
 \author{\IEEEauthorblockN{Kajsa Linderoth}
-\IEEEauthorblockA{\textit{Department of Computer and Systems Sciences} \\
-\textit{Stockholm University}\\
-Stockholm, Sweden}
+
 \and
 \IEEEauthorblockN{Monia L\"onn}
-\IEEEauthorblockA{\textit{Department of Computer and Systems Sciences} \\
-\textit{Stockholm University}\\
-Stockholm, Sweden}
+
 \and
 \IEEEauthorblockN{Noor Abo Hasan}
-\IEEEauthorblockA{\textit{Department of Computer and Systems Sciences} \\
-\textit{Stockholm University}\\
-Stockholm, Sweden}
+
 }
 
 \maketitle
 
-\begin{abstract}
-PDF files are the dominant format for public communication among Swedish government agencies and institutions. Beyond their visible content, PDF files contain embedded metadata that may include author names, usernames, software environments, and traces of internal workflows. While typically invisible to end users, such information can be extracted with minimal effort. This concept note outlines a forensic study that analyses metadata and hidden version history in publicly available PDF documents from Swedish public-sector organisations, in order to identify unintended information exposure, understand what it reveals about internal systems, and assess its relevance in a cybersecurity context.
-\end{abstract}
 
-\begin{IEEEkeywords}
-metadata leakage, PDF forensics, cybersecurity, Swedish public sector, NIS2, digital attack surface
-\end{IEEEkeywords}
+
+
 
 \section{Introduction and Background}
 
@@ -68,7 +58,7 @@ Extracted metadata will be cleaned, structured, and categorised into relevant ty
 \section{Expected Results}
 
 Preliminary findings from a pilot study indicate that publicly available documents from Swedish institutions expose metadata such as personal names and internal usernames, software environments and system configurations, and document creation and editing workflows. Based on these initial observations, the study expects to find that metadata leakage is widespread but uneven across organisations, with certain sectors exhibiting higher levels of exposure. While some improvements may be visible over time, systematic weaknesses are likely to persist. The findings are expected to contribute to a better understanding of metadata as part of the digital attack surface, and to highlight the need for improved metadata hygiene in public-sector document publishing.
-
+\clearpage % This forces the references to start on a new page
 \begin{thebibliography}{00}
 \bibitem{b1} M. Spiegel, ``Are your documents leaking sensitive information? Scrub your metadata!'' \textit{EDUCAUSE Review}, 2017.
 \bibitem{b2} S. Adhatarao and C. Lauradoux, ``Exploitation and Sanitization of Hidden Data in PDF Files,'' \textit{ACM Workshop on Information Hiding and Multimedia Security}, 2021.
