@@ -1,0 +1,48 @@
+12:58:51 [INFO] ============================================================
+12:58:51 [INFO] PDF Metadata Collector — Swedish Public Authorities
+12:58:51 [INFO] Legal basis: Offentlighetsprincipen + GDPR Art. 89
+12:58:51 [INFO] Output directory: /Users/noorabohasan/Desktop/PDFMETA/03_Data
+12:58:51 [INFO] Dry-run: True
+12:58:51 [INFO] ============================================================
+12:58:51 [INFO] Resuming: 0 URLs already in log
+
+12:58:51 [INFO] Processing 1 authorit(y/ies)
+
+12:58:51 [INFO] 
+============================================================
+Authority : Säkerhets- och integritetsskyddsnämnden
+Tier      : 1
+Quota left: 2020-2023=50  2024-2025=50
+============================================================
+12:58:51 [WARNING] Could not fetch https://www.sakint.se/robots.txt: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.sakint.se'. (_ssl.c:1129)> — treating as allow-all
+12:58:51 [INFO]   → Discovered 0 new PDF links
+12:58:51 [WARNING]   No new PDF links found for Säkerhets- och integritetsskyddsnämnden
+12:58:51 [INFO] 
+✅ Collection complete.
+12:58:51 [INFO]    Collection log : /Users/noorabohasan/Desktop/PDFMETA/03_Data/collection_log.csv
+12:58:51 [INFO]    Metadata fields: /Users/noorabohasan/Desktop/PDFMETA/03_Data/metadata_fields.csv
+12:58:51 [INFO]    Error log      : /Users/noorabohasan/Desktop/PDFMETA/03_Data/crawl_errors.log
+12:59:19 [INFO] ============================================================
+12:59:19 [INFO] PDF Metadata Collector — Swedish Public Authorities
+12:59:19 [INFO] Legal basis: Offentlighetsprincipen + GDPR Art. 89
+12:59:19 [INFO] Output directory: /Users/noorabohasan/Desktop/PDFMETA/03_Data
+12:59:19 [INFO] Dry-run: True
+12:59:19 [INFO] ============================================================
+12:59:19 [INFO] Resuming: 0 URLs already in log
+
+12:59:19 [INFO] Processing 1 authorit(y/ies)
+
+12:59:19 [INFO] 
+============================================================
+Authority : Säkerhets- och integritetsskyddsnämnden
+Tier      : 1
+Quota left: 2020-2023=50  2024-2025=50
+============================================================
+12:59:19 [WARNING] Could not fetch https://www.sakint.se/robots.txt: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.sakint.se'. (_ssl.c:1129)> — treating as allow-all
+12:59:19 [INFO]   → Discovered 0 new PDF links
+12:59:19 [WARNING]   No new PDF links found for Säkerhets- och integritetsskyddsnämnden
+12:59:19 [INFO] 
+✅ Collection complete.
+12:59:19 [INFO]    Collection log : /Users/noorabohasan/Desktop/PDFMETA/03_Data/collection_log.csv
+12:59:19 [INFO]    Metadata fields: /Users/noorabohasan/Desktop/PDFMETA/03_Data/metadata_fields.csv
+12:59:19 [INFO]    Error log      : /Users/noorabohasan/Desktop/PDFMETA/03_Data/crawl_errors.log
