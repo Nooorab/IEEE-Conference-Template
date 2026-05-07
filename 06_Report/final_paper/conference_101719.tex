@@ -20,51 +20,69 @@
 \maketitle
 
 \begin{abstract}
-PDF files are the dominant format for public communication among Swedish government agencies. Beyond their visible content, PDF files contain embedded metadata---including author names, usernames, software environments, and traces of internal workflows---that can be extracted with minimal effort. This study analyses metadata and hidden version history in publicly available PDF documents from 30 Swedish public-sector organisations, assessing unintended information exposure and its implications for cybersecurity.
+% ~ 200 words
 \end{abstract}
 
 \begin{IEEEkeywords}
-metadata leakage, PDF forensics, cybersecurity, Swedish public sector, NIS2, digital attack surface
+metadata, exiftool, sweden, pdf forensics, cybersecurity, public sector, NIS2
 \end{IEEEkeywords}
 
+\section{Introduction} % ~ 1000 words Monia
+\subsection{Background}
+% Here we write about pdf metadata as an often overlooked attack vector,which in public facing organisations may make the attack surface bigger by enabling organizational fingerprinting, spear pshishing and other targeted attacks. Write about how there is not much previous research in sweden. 
+\subsection{Metadata and incremental data}
+% See adhataro paper, explain different metadata fields.
+\subsection{Research problem}
+\subsection{Research question}
+\subsection{Scope}
+% (Delimitations such as only looking at pdf:s published and archived on website, 30 institutions)
 
-\section{Introduction and Background}
+\section{Related Work} % ~ 600 words Monia
+% Netherlands, Mulder et al.
+% Mendelman, Estonia
+% Taichi Hasegawa, Taiichi Saito, and Ryoichi Sasaki, Tokyo Denki University,
+% S. Adhatarao, C. Lauradoux, 
 
-PDF files are the dominant format for public communication among Swedish government agencies and institutions. They are widely used because they preserve document layout and ensure compatibility across systems, providing a stable format for publishing official materials such as reports and policy documents. Beyond visible content, PDF files contain embedded metadata describing how a document was created, edited, and processed. This data may include author names, usernames, software environments, and traces of internal workflows~\cite{b1}. While typically invisible to end users, such information can be extracted with minimal effort using widely available tools.
+\section{Methodology} % ~ 1200 words Kajsa
+\subsection{Data collection}
+\subsubsection{Exposure Categories}
+\subsubsection{Sampling Strategy}
+\paragraph{Institutional Sampling (Stage 1)}
+\paragraph{Document Sampling (Stage 2)}
+\paragraph{Temporal Stratification}
+\paragraph{Resulting Sample}
 
-From a digital forensics perspective, metadata provides valuable insight into document provenance. However, it also constitutes an overlooked exposure factor within the attack surface of public-facing organisations. As shown in prior research, metadata can enable infrastructure fingerprinting and targeted cyber attacks by revealing contextual information about people and systems~\cite{b2}. Despite increasing global awareness, there is limited empirical research examining this phenomenon in the Swedish context. This study addresses that gap by analysing documents from Swedish organisations to assess their forensic and cybersecurity implications, particularly in light of the new cybersecurity requirements introduced by the NIS2 directive~\cite{b3}.
+\subsection{Collection Pipeline}
+\subsubsection{Automated Discovery}
+\subsubsection{Acquisition and Filtering}
+\subsubsection{Forensic Processing and Integrity}
+\subsubsection{Legal and Ethical Framework}
 
-\section{Objective and Research Questions}
+\subsection{Data Analysis}
+\subsubsection{Metadata}
+\subsubsection{Incremental data}
 
-The aim of this study is to analyse metadata and hidden version history in publicly available PDF documents from Swedish public-sector organisations, in order to identify unintended information exposure, understand what it reveals about internal systems, and assess its relevance in a cybersecurity context.
+\subsection{Statistical framework}
+% Here we describe the statistical tests (both descriptive and inferential) we are gonna do
 
-The main research question is: \textit{What metadata is exposed in publicly available PDF documents from Swedish public-sector organisations, and what does it reveal?}
+\section{Ethical Considerations} % ~ 200 words Monia 
+% Here we describe things we have considered such as anonymizing the data and keeping it secure, deleting the pds files after finishing the tests, the script =  when we collected the data 3-5 second delay, for replications = the scripts will be on github? Kajsas parts from the methodology.
 
-The following sub-questions guide the investigation:
-\begin{itemize}
-    \item How does metadata exposure vary across different institutions and sectors?
-    \item How is exposed metadata relevant in a cybersecurity context?
-    \item Whether exposure patterns change over time, indicating improvements or persistent weaknesses?
-    \item To what extent can sensitive information be recovered from the hidden incremental update history of the documents?
-\end{itemize}
+\section{Results} % ~ 1200 words
+\subsection{Summary}
+% Tier 1, 2 and 3 x R0, R1, R2, R3 
+% How many files contained author names, emails, usernames, filepaths. 
 
-\section{Methodology}
+\subsection{Comparison}
 
-The study analyses approximately 3,000 PDF documents collected from 30 Swedish public-sector agencies, grouped into tiers based on security sensitivity, infrastructure relevance, and data volume. Data will be collected using a custom Python scraper built with the Requests and BeautifulSoup libraries, which will harvest documents while recording publication dates to ensure temporal accuracy.
+\section{Analysis and Discussion} % ~ 600 words
 
-Systematic extraction will be performed using ExifTool to capture surface metadata, which will then be classified according to the R0--R3 risk taxonomy~\cite{b4}. For deeper forensic analysis, the study will utilise \texttt{pdf-parser.py} to identify files with multiple trailers indicating hidden history, and \texttt{pdfresurrect} to recover and analyse previous versions of supposedly sanitised documents.
+\section{Limitations and Future Work} % ~ 200 words Monia
+% Limitations: Only looking and files available for download on webpages. Future research should look at public documents that are digitalized and handed out, but are not available on sites. 
 
-Extracted metadata will be cleaned, structured, and categorised into relevant types (e.g., identity-related, system-related, workflow-related). The analysis will include descriptive statistics (frequency of metadata types), comparative analysis across organisations and sectors, and temporal analysis to identify changes over time. Where appropriate, statistical tests will be applied to evaluate differences between institutions and trends in metadata exposure.
+\section{Conclusion} % ~ 300 words
 
-\section{Expected Results}
-
-Preliminary findings from a pilot study indicate that publicly available documents from Swedish institutions expose metadata such as personal names and internal usernames, software environments and system configurations, and document creation and editing workflows. Based on these initial observations, the study expects to find that metadata leakage is widespread but uneven across organisations, with certain sectors exhibiting higher levels of exposure. While some improvements may be visible over time, systematic weaknesses are likely to persist. The findings are expected to contribute to a better understanding of metadata as part of the digital attack surface, and to highlight the need for improved metadata hygiene in public-sector document publishing.
-\clearpage % This forces the references to start on a new page
-\begin{thebibliography}{00}
-\bibitem{b1} M. Spiegel, ``Are your documents leaking sensitive information? Scrub your metadata!'' \textit{EDUCAUSE Review}, 2017.
-\bibitem{b2} S. Adhatarao and C. Lauradoux, ``Exploitation and Sanitization of Hidden Data in PDF Files,'' \textit{ACM Workshop on Information Hiding and Multimedia Security}, 2021.
-\bibitem{b3} T. Hasegawa, T. Saito, and R. Sasaki, ``Analyzing Metadata in PDF Files Published by Police Agencies in Japan,'' \textit{IEEE QRS-C 2022 Conference}, 2022.
-\bibitem{b4} L. Skrau\v{c}a, ``From Metadata to Attack Surface: A Study of Public Document Publishing in Estonia's Governmental, Corporate, and Educational Sector,'' Tallinn University of Technology, 2026.
-\end{thebibliography}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
 
 \end{document}
