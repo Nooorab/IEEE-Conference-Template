@@ -186,11 +186,72 @@ To reduce ethical risks, personal names, usernames, and sensitive organisational
 The data collection process was used to minimise impact on the targeted websites. The collection script checked each domain’s robots.txt file and avoided paths that were not permitted. It also used a random delay of 3.0–5.0 seconds between requests to reduce unnecessary load on servers. For transparency and replication, the scripts used for collection and analysis will be made available through GitHub. However, the collected PDF files and any sensitive extracted metadata will not be redistributed. Any processing of personal data will be considered in relation to GDPR Article 6, which states that processing is lawful only if at least one lawful basis applies \cite{eu-gdpr}.
 
 \section{Results} % ~ 1200 words
-\subsection{Summary}
-% Tier 1, 2 and 3 x R0, R1, R2, R3 
-% How many files contained author names, emails, usernames, filepaths. 
 
-\subsection{Comparison}
+\subsection{Overall Risk Distribution}
+In accordance with the metadata risk taxonomy defined in the Methodology, all 66,989 extracted metadata fields were classified from R0 to R3. At the document level, 47.8\% of documents exhibited R2 (Medium Risk) as their highest risk factor, and 0.7\% exhibited R3 (High Risk). 
+
+Figure \ref{fig:tier_risk} presents the distribution of R1, R2, and R3 risk levels across the three institutional tiers.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/tier_risk_distribution.png}
+    \caption{Metadata Risk Distribution by Institutional Tier. R0 documents are excluded as no document had R0 as its highest risk factor.}
+    \label{fig:tier_risk}
+\end{figure}
+
+\subsection{Sectoral Tier Comparison}
+To quantitatively evaluate the disparity in metadata hygiene across the Swedish administrative landscape, we employed Pearson’s Chi-Square ($\chi^2$) tests of independence. The statistical matrix was constructed as a $3 \times 2$ contingency table, mapping the three organizational Tiers (Independent Variable) against a binary risk classification (Dependent Variable).
+
+For the purpose of statistical validity, we established a "Significant Risk" threshold by aggregating R2 and R3 occurrences. This aggregation ensured that all cells within the contingency matrix maintained an expected frequency of at least 5, satisfying the fundamental assumptions of the Chi-Square distribution.
+
+The null hypothesis posited that metadata leakage rates are independent of an organization's Tier, while the alternative hypothesis asserted a systemic correlation between organizational mission and digital hygiene. All calculations were performed using Python's \texttt{scipy.stats} library, with the significance threshold set at $p < 0.05$.
+
+As shown in Table \ref{tab:chi_tier}, Tier 2 (Infrastructure \& Civilian) exhibited the highest rate of significant risk exposure (56.7\%), compared to 49.5\% in Tier 1 (Strategic \& Sovereign Risk) and 37.9\% in Tier 3 (Societal \& Privacy Risk). Both comparisons against Tier 1 yielded statistically significant results, rejecting the null hypothesis.
+
+\begin{table}[htbp]
+\centering
+\caption{Chi-Square Test Results: Sectoral Tier Comparison (R2+ Risk)}
+\label{tab:chi_tier}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Comparison} & \textbf{R2+ Exposure} & \textbf{$\chi^2$} & \textbf{p-value} & \textbf{Sig.} \\
+\hline
+Tier 1 vs. Tier 2 & 49.5\% vs 56.7\% & 10.58 & 0.0050 & ** \\
+Tier 1 vs. Tier 3 & 49.5\% vs 37.9\% & 25.09 & < 0.0001 & *** \\
+\hline
+\multicolumn{5}{l}{\footnotesize Significance levels: * $p < 0.05$, ** $p < 0.01$, *** $p < 0.001$} \\
+\end{tabular}
+\end{table}
+
+\subsection{Temporal Comparison}
+To evaluate the chronological evolution of metadata hygiene relative to the enactment of the Cybersäkerhetslagen, we executed a longitudinal Pearson’s Chi-Square ($\chi^2$) test of independence. The statistical matrix was constructed as a $3 \times 2$ contingency table, mapping the three distinct temporal epochs against the binary R2+ risk classification.
+
+Consistent with our sectoral analysis, we utilized the aggregated "Significant Risk" (R2+) threshold to satisfy the Chi-Square requirement for expected cell frequencies ($E \geq 5$). The null hypothesis posited that metadata exposure rates are independent of the document publication period, indicating a lack of programmatic response to legislative pressure. Conversely, the alternative hypothesis asserted that document hygiene improved significantly in correlation with the Swedish legislative lifecycle. Significance was evaluated at the $p < 0.05$ threshold.
+
+Figure \ref{fig:temporal_risk} visualizes the risk distribution across the three temporal epochs. Table \ref{tab:chi_temporal} presents the results of the Chi-Square test comparing the Pre-NIS2 period against the NIS2 Preparation period.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/temporal_risk_distribution.png}
+    \caption{Metadata Risk Distribution Across Temporal Epochs.}
+    \label{fig:temporal_risk}
+\end{figure}
+
+The statistical analysis (Table \ref{tab:chi_temporal}) indicates a slight decrease in significant risk exposure from 52.2\% (Pre-NIS2) to 47.5\% (NIS2 Preparation). However, this reduction did not achieve statistical significance at the $p < 0.05$ threshold ($p = 0.087$). Therefore, we fail to reject the null hypothesis, suggesting that metadata hygiene practices did not improve significantly during the NIS2 transposition period.
+
+\begin{table}[htbp]
+\centering
+\caption{Chi-Square Test Results: Temporal Comparison (R2+ Risk)}
+\label{tab:chi_temporal}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Comparison} & \textbf{R2+ Exposure} & \textbf{$\chi^2$} & \textbf{p-value} & \textbf{Sig.} \\
+\hline
+2020-2023 vs. 2024-2025 & 52.2\% vs 47.5\% & 4.88 & 0.0870 & ns \\
+\hline
+\multicolumn{5}{l}{\footnotesize Significance levels: * $p < 0.05$, ns = not significant} \\
+\end{tabular}
+\end{table}
 
 \section{Analysis and Discussion} % ~ 600 words
 
