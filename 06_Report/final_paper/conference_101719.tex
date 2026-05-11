@@ -260,7 +260,25 @@ Notably, even within Tier 1 (Strategic \& Sovereign Risk), performance ranges dr
 \end{tabular}
 \end{table}
 
-\subsection{Temporal Comparison}
+\subsection{Structural Content Leakage}
+To address RQ3, the study evaluated the prevalence of incremental update layers across the dataset. As defined in the Methodology, documents were flagged for structural content leakage if they contained multiple cross-reference tables and %%EOF markers beyond their standard linearization requirements.
+
+\subsubsection{Prevalence and Tier Distribution}
+The analysis revealed that structural content leakage is a pervasive phenomenon across the Swedish public sector, with 80.0\% (2,301/2,876) of all sampled documents containing at least one appended incremental update layer. This high prevalence suggests that "saving" rather than "exporting" is the dominant publication workflow. 
+
+Tier 2 (Systemic \& Structural Risk) and Tier 3 (Societal \& Privacy Risk) exhibited the highest rates of structural leakage at 83.9\% and 83.0\% respectively, while Tier 1 (Strategic \& Sovereign Risk) maintained a slightly lower but still significant rate of 73.8\%. 
+
+\subsubsection{Revision Bloat and Outlier Analysis}
+The depth of structural leakage was measured through "Revision Bloat," representing the total number of historical document states preserved within the binary stream. While the median document harbored only 2–3 versions, the study identified extreme outliers where document histories spanned dozens of internal revisions.
+
+Three documents were identified as "extreme outliers" harboring more than 50 versions:
+\begin{itemize}
+    \item \textbf{Stockholm University (Årsredovisning 2024)}: 130 versions.
+    \item \textbf{Stockholm University (Årsredovisning 2023)}: 123 versions.
+    \item \textbf{Swedish Social Insurance Agency (Socialförsäkringen i siffror 2021)}: 84 versions.
+\end{itemize}
+
+The presence of 130 distinct version markers in a single publicly available PDF represents a significant forensic risk. Each marker corresponds to a point where a user likely modified the document (e.g., correcting financial figures, changing phrasing, or removing sensitive placeholders) and saved the file without a final flattening or sanitization process. In a worst-case scenario, this allows a forensic investigator to "rewind" the document and recover content that the organization explicitly intended to supersede or delete.
 To evaluate the chronological evolution of metadata hygiene relative to the enactment of the Cybersäkerhetslagen, we executed a longitudinal Pearson’s Chi-Square ($\chi^2$) test of independence. The statistical matrix was constructed as a $3 \times 2$ contingency table, mapping the three distinct temporal epochs against the binary R2+ risk classification.
 
 Consistent with our sectoral analysis, we utilized the aggregated "Significant Risk" (R2+) threshold to satisfy the Chi-Square requirement for expected cell frequencies ($E \geq 5$). The null hypothesis posited that metadata exposure rates are independent of the document publication period, indicating a lack of programmatic response to legislative pressure. Conversely, the alternative hypothesis asserted that document hygiene improved significantly in correlation with the Swedish legislative lifecycle. Significance was evaluated at the $p < 0.05$ threshold.
@@ -300,6 +318,8 @@ The statistical disparity between Tier 1 (13.8\% exposure for S\"{A}PO) and Tier
 A key finding of this study is the presence of high-risk (R3) identifiers that go beyond simple author names. The discovery of internal portal paths (e.g., \texttt{.local} SharePoint domains) and Active Directory usernames (4.9\% of documents) provides an adversary with a blueprint of the target’s internal network topology and naming conventions. 
 
 Furthermore, the exposure of third-party identifiers, such as Mendeley Unique User IDs and Grammarly Document IDs, adds a new dimension to organizational fingerprinting. These tokens allow an attacker to link seemingly unrelated documents to specific individuals across different platforms, enabling highly targeted spear-phishing campaigns. The fact that these identifiers were found even in agencies with otherwise "clean" metadata, such as the Public Health Agency, indicates that standard sanitization tools may not be equipped to detect or remove specialized metadata fields introduced by modern e-learning and collaboration software (e.g., Articulate Storyline).
+
+The prevalence of structural content leakage (80.0\% of documents) further complicates the forensic landscape. The discovery of documents harboring over 100 historical versions—particularly in high-stakes annual reports—suggests that the "Drafting and Finalization" process is inadvertently made public. From a forensic perspective, this "Revision Bloat" is even more critical than metadata field leakage, as it may preserve the exact text (e.g., draft financial figures or unredacted names) that was intended for removal. This highlights a critical technical gap: Swedish public authorities are largely relying on the PDF format's convenience without understanding its binary persistence.
 
 \subsection{Regulatory Lag and the NIS2 Trajectory}
 The temporal analysis yielded a critical finding: despite the looming implementation of the NIS2 Directive and the Swedish \textit{Cybers\"{a}kerhetslag}, metadata hygiene did not improve significantly between 2020 and 2025 ($p=0.087$). This "regulatory lag" suggests that while organizations may be investing in high-level cybersecurity compliance (such as network firewalls and encryption), the mundane aspects of digital hygiene—such as document sanitization—remain neglected. Metadata continues to be an overlooked component of the organizational attack surface, potentially serving as a "reconnaissance-as-a-service" source for actors seeking to map the technical vulnerabilities of Swedish critical infrastructure before more active attacks are launched.
