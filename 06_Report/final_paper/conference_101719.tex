@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage{multirow}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -232,6 +233,30 @@ Tier 1 vs. Tier 2 & 49.5\% vs 56.7\% & 10.58 & 0.0050 & ** \\
 Tier 1 vs. Tier 3 & 49.5\% vs 37.9\% & 25.09 & < 0.0001 & *** \\
 \hline
 \multicolumn{5}{l}{\footnotesize Significance levels: * $p < 0.05$, ** $p < 0.01$, *** $p < 0.001$} \\
+\end{tabular}
+\end{table}
+
+While the Chi-Square analysis establishes statistical trends at the aggregate tier level, examining individual authorities reveals significant intra-tier variance. Table \ref{tab:auth_extremes} highlights the extreme ends of the metadata hygiene spectrum by showcasing the best and worst performing authorities within each tier, measured by their percentage of documents exhibiting significant risk (R2 and R3).
+
+Notably, even within Tier 1 (Strategic \& Sovereign Risk), performance ranges dramatically from the Swedish Security Service (SÄPO), which exhibited excellent metadata hygiene with only 13.8\% exposure, to the Swedish Defence Research Agency (FOI), which leaked significant risk data in 92.0\% of its published documents. Similarly, the Public Health Agency of Sweden in Tier 3 achieved perfect metadata hygiene (0.0\% exposure) across its sampled documents, demonstrating that complete metadata sanitization is operationally feasible within the Swedish public sector.
+
+\begin{table}[htbp]
+\centering
+\caption{Metadata Hygiene Performance Extremes by Tier (R2+R3 Exposure)}
+\label{tab:auth_extremes}
+\begin{tabular}{|l|l|l|c|}
+\hline
+\textbf{Tier} & \textbf{Performance} & \textbf{Authority Name} & \textbf{Exposure} \\
+\hline
+\multirow{2}{*}{Tier 1} & Best & Swedish Security Service (SÄPO) & 13.8\% (9/65) \\
+ & Worst & Swedish Defence Research Agency (FOI) & 92.0\% (92/100) \\
+\hline
+\multirow{2}{*}{Tier 2} & Best & Agency for Digital Government (DIGG) & 14.8\% (16/108) \\
+ & Worst & Swedish Post and Telecom Authority (PTS) & 90.5\% (19/21) \\
+\hline
+\multirow{2}{*}{Tier 3} & Best & Public Health Agency of Sweden & 0.0\% (0/76) \\
+ & Worst & Karolinska Institute & 83.6\% (51/61) \\
+\hline
 \end{tabular}
 \end{table}
 
