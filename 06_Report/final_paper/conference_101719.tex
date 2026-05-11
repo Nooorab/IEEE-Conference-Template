@@ -199,6 +199,18 @@ Figure \ref{fig:tier_risk} presents the distribution of R1, R2, and R3 risk leve
     \label{fig:tier_risk}
 \end{figure}
 
+\subsection{Types of Information Exposed}
+Beyond broad risk classifications, it is important to understand exactly what types of sensitive information are being exposed in publicly available public-sector documents. To analyze this, the specific leaked metadata fields were grouped into five overarching, human-readable categories. Since a single document can leak multiple types of information (e.g., both a personal name and an email address), the percentages reflect the proportion of the 2,869 unique documents that contained at least one instance of that specific data type.
+
+Figure \ref{fig:data_type_exposure} visualizes this breakdown. Personal names were the most frequently exposed sensitive data type, found in 38.2\% of all analyzed documents. Active Directory Usernames, which map directly to internal authentication schemas, were exposed in 4.9\% of documents. Email addresses were found in 2.1\% of documents. More critically, 0.6\% of documents leaked internal system and workflow tags (such as Microsoft Information Protection labels that expose internal Tenant IDs), and 0.1\% leaked absolute local file paths or mapped network drives.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/data_type_exposure.png}
+    \caption{Percentage of documents exposing specific types of sensitive information. Categories are non-exclusive.}
+    \label{fig:data_type_exposure}
+\end{figure}
+
 \subsection{Sectoral Tier Comparison}
 To quantitatively evaluate the disparity in metadata hygiene across the Swedish administrative landscape, we employed Pearson’s Chi-Square ($\chi^2$) tests of independence. The statistical matrix was constructed as a $3 \times 2$ contingency table, mapping the three organizational Tiers (Independent Variable) against a binary risk classification (Dependent Variable).
 
