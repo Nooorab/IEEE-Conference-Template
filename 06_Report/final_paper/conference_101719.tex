@@ -108,7 +108,24 @@ The dataset was stratified temporally into three periods aligned with the legisl
 \end{itemize}
 
 \paragraph{Resulting Sample}
-The combined sampling procedure yielded 2,876 (CHECK!!) unique documents acquired across 30 authorities. Table X summarises the distribution of unique documents by tier and stratum.
+The combined sampling procedure yielded 2,876 unique documents acquired across 30 authorities. Table \ref{tab:sample_distribution} summarises the distribution of documents by tier and temporal stratum (excluding 60 documents that fell outside the temporal bounds or had unresolvable dates).
+
+\begin{table}[htbp]
+\centering
+\caption{Distribution of Unique Documents by Tier and Temporal Stratum}
+\label{tab:sample_distribution}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Tier} & \textbf{2020–2023} & \textbf{2024–2025} & \textbf{2026–Present} & \textbf{Total} \\
+\hline
+Tier 1 & 378 & 381 & 260 & 1019 \\
+Tier 2 & 375 & 393 & 187 & 955 \\
+Tier 3 & 298 & 338 & 206 & 842 \\
+\hline
+\textbf{Total} & \textbf{1051} & \textbf{1112} & \textbf{653} & \textbf{2816} \\
+\hline
+\end{tabular}
+\end{table}
 
 \subsection{Collection Pipeline}
 A custom automated pipeline was constructed for document discovery, acquisition, and forensic processing:
