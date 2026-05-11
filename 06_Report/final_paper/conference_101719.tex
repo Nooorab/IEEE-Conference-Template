@@ -29,13 +29,40 @@ metadata, exiftool, sweden, pdf forensics, cybersecurity, public sector, NIS2
 
 \section{Introduction} % ~ 1000 words Monia
 \subsection{Background}
-% Here we write about pdf metadata as an often overlooked attack vector,which in public facing organisations may make the attack surface bigger by enabling organizational fingerprinting, spear pshishing and other targeted attacks. Write about how there is not much previous research in sweden. 
-\subsection{Metadata and incremental data}
-% See adhataro paper, explain different metadata fields.
-\subsection{Research problem}
-\subsection{Research question}
-\subsection{Scope}
-% (Delimitations such as only looking at pdf:s published and archived on website, 30 institutions)
+PDF files are widely used for public communication by Swedish government agencies and institutions. Their popularity comes from their ability to preserve document layout and maintain compatibility across different systems, making them a reliable format for publishing official materials such as reports, policy documents, guidelines, and administrative records \cite{iso32000}. In Sweden, this reliance on digital publication is closely connected to the broader transition toward digital governance and the principle of public access to official records, Offentlighetsprincipen, which gives the public and media the right to insight into the activities of public authorities \cite{swe_public_access}. This principle supports democratic transparency and accountability \cite{swe_public_access}. However, because large volumes of official documents are made publicly available, publication workflows also become part of the public sector’s security posture. If documents are not reviewed or sanitised before publication, they may expose information that was never intended for public access [Add source here].
+
+Beyond the content visible to readers, PDF files often contain embedded metadata describing how the file was created, edited, converted, and processed \cite{spiegel2017}. This metadata may include author names, usernames, software names and versions, producer fields, and traces of internal workflows \cite{spiegel2017}. Although this information is usually not visible to ordinary readers, it can be extracted using common forensic and metadata-analysis tools [Add source here]. For public-sector organisations, this makes metadata hygiene an important but sometimes overlooked part of information security. Metadata hygiene refers to the practice of reviewing, minimising, or removing unnecessary embedded information before documents are published [Add source here]. In a public-sector publishing context, exposed metadata may indicate that document review and sanitisation routines are not applied consistently before publication. Poor metadata hygiene can therefore be viewed as a sign of gaps in organisational information security practices, rather than as an inherent flaw in the PDF format itself.
+
+From a digital forensics perspective, metadata is valuable because it can provide insight into a document’s origin, creation process, and later modifications \cite{spiegel2017, [Add source here]}. At the same time, when this information is exposed unintentionally, it may create security risks by revealing details about internal systems, user environments, naming conventions, or organisational structures [Add source here]. These details may seem minor on their own, but when collected across many documents, they can support organisational fingerprinting by helping attackers build a broader picture of an organisation’s technical environment, software dependencies, document-management practices, and working routines. In this way, exposed metadata can expand the attack surface during reconnaissance. For example, staff names or usernames may support spear-phishing attempts, while software and version information may help attackers identify specific tools or possible weaknesses to target [Add source here]. Metadata leakage can therefore support more targeted attacks, even when the exposed information appears harmless on its own. Previous research has shown that metadata leakage can support infrastructure fingerprinting and targeted cyber attacks by providing contextual information about both individuals and systems \cite{adhatarao2021}, \cite{hasegawa2022}.
+
+The risks are not limited to ordinary metadata fields. A central feature of the PDF format is its support for incremental updates \cite{iso32000}. When a PDF is modified, the file is not always rewritten from scratch. Instead, new or changed objects may be appended to the existing file, together with updated cross-reference information and trailer data \cite{iso32000}. This design can preserve earlier document states, meaning that deleted, overwritten, or finalised content may remain recoverable unless the document has been properly sanitised, flattened, or regenerated [Add source here]. As a result, a publicly available PDF may contain more than its visible final version. It may also include structural traces of earlier edits, hidden content, or previous versions of objects that were assumed to have been removed \cite{adhatarao2021}.
+
+Despite growing awareness of metadata-related risks, limited empirical research has focused specifically on metadata exposure in Swedish public-sector documents. This gap is especially relevant in a highly digitalised environment such as Sweden, where public organisations increasingly rely on digital communication and where regulatory frameworks such as the NIS2 Directive place greater emphasis on cybersecurity, risk management, and organisational accountability [Add source here]. Understanding how metadata is exposed in publicly available documents is therefore important not only from a forensic perspective, but also from the perspective of organisational security hygiene and regulatory readiness.
+
+\subsection{Research Problem}
+The research problem is that publicly available PDFs may contain hidden metadata and structural traces that expose sensitive organisational information, but little is known about the scale, severity, and patterns of this exposure in the Swedish public sector. This study therefore investigates whether publicly available PDFs from Swedish public-sector organisations leak metadata or structural traces that may reveal information about internal systems, software environments, user patterns, document workflows, and organisational structures.
+
+This exposure is significant because such information may support organisational fingerprinting when collected across many documents. By combining exposed metadata from multiple files, attackers may build a broader picture of an organisation’s technical environment and working routines. This can support reconnaissance, spear-phishing attempts, and other targeted attacks.
+
+In addition, metadata exposure reflects broader questions of organisational security hygiene. Public-sector organisations often publish large numbers of documents through different systems and workflows, which increases the risk that embedded information is preserved unintentionally. Understanding how often such exposure occurs, what types of information are leaked, and how severe the exposure is can therefore provide insight into both cybersecurity risks and digital forensic implications.
+
+\subsection{Research Question}
+This study is guided by the following main research question:
+
+To what extent, and with what severity, do publicly available PDF documents from Swedish public-sector organisations expose sensitive information through metadata and structural content leakage?
+
+The following sub-questions support the main research question:
+\begin{itemize}
+    \item \textbf{RQ1}: How does the prevalence and severity of metadata exposure vary across institutional tiers?
+    \item \textbf{RQ2}: How do metadata exposure patterns change across the pre-NIS2, NIS2 preparation, and post-NIS2 implementation periods?
+    \item \textbf{RQ3}: To what extent is unintended information recoverable from the incremental update history of publicly available Swedish public-sector PDFs?
+\end{itemize}
+
+\subsection{Scope and Delimitations}
+This study addresses this gap by analysing metadata and hidden version history in publicly available PDF documents from Swedish public-sector organisations. The analysis examines PDF documents collected from 30 Swedish government agencies and institutions in order to identify patterns of information exposure, assess what metadata reveals about internal systems and workflows, and evaluate the implications from both cybersecurity and digital forensic perspectives.
+
+The scope of the study is limited to documents that were publicly available through official websites and online archives at the time of collection. Unpublished documents and files stored in internal systems that are not publicly accessible are therefore excluded. The study also focuses specifically on PDF metadata and structural content leakage, rather than the visible textual content of the documents or the broader cybersecurity posture of each organisation.
+
 
 \section{Related Work} % ~ 600 words Monia
 % Netherlands, Mulder et al.
