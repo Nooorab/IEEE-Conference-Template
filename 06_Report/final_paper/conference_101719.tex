@@ -249,8 +249,8 @@ Notably, even within Tier 1 (Strategic \& Sovereign Risk), performance ranges dr
 \multirow{2}{*}{T2} & Best & DIGG & 14.8\%  \\
  & Worst & PTS & 90.5\%  \\
 \hline
-\multirow{2}{*}{T3} & Best & Public Health Agency & 6.6\% \\
- & Worst & Karolinska Inst. & 83.6\% \\
+\multirow{2}{*}{T3} & Best & Folkhälsomyndigheten & 6.6\% \\
+ & Worst & Karolinska institutet & 83.6\% \\
 \hline
 \end{tabular}
 }
@@ -302,9 +302,9 @@ The depth of structural leakage was measured through "Revision Bloat," represent
 
 Three documents were identified as "extreme outliers" harboring more than 50 versions:
 \begin{itemize}
-    \item \textbf{Stockholm University (Årsredovisning 2024)}: 130 versions.
-    \item \textbf{Stockholm University (Årsredovisning 2023)}: 123 versions.
-    \item \textbf{Swedish Social Insurance Agency (Socialförsäkringen i siffror 2021)}: 84 versions.
+    \item \textbf{Stockholm universitet (Årsredovisning 2024)}: 130 versions.
+    \item \textbf{Stockholm universitet (Årsredovisning 2023)}: 123 versions.
+    \item \textbf{Försäkringskassan (Socialförsäkringen i siffror 2021)}: 84 versions.
 \end{itemize}
 
 The presence of 130 distinct version markers in a single publicly available PDF represents a significant forensic risk. Each marker corresponds to a point where a user likely modified the document (e.g., correcting financial figures, changing phrasing, or removing sensitive placeholders) and saved the file without a final flattening or sanitization process.
@@ -320,7 +320,7 @@ Three representative cases illustrate the range of recoverable content:
     \item \textbf{Legal Text Restructuring (Bolagsverket):} A government registration form (Blankett 719) underwent 36 revisions. Version 34 contained a full prose paragraph listing all eligible legal entity types for minority auditor appointment, which was later restructured into a condensed bullet list. The original, more expansive legal language is fully recoverable.
 \end{itemize}
 
-Conversely, the Swedish Customs (Tullverket) emerged as a positive outlier, with only 3 of its 121 sampled documents (2.5\%) containing incremental saves beyond linearization requirements. This suggests that implementing centralized, sanitized PDF export workflows that strip revision history is operationally achievable. Interestingly, the Swedish Defence Research Agency (FOI) presented an anomalous profile: while exhibiting the worst metadata field exposure in Tier 1 (92.0\% R2+ risk), a comparatively lower share of its documents contained actionable incremental saves, suggesting the use of PDF converters that flatten structural history but fail to strip embedded metadata tags.
+Conversely, Tullverket emerged as a positive outlier, with only 3 of its 121 sampled documents (2.5\%) containing incremental saves beyond linearization requirements. This suggests that implementing centralized, sanitized PDF export workflows that strip revision history is operationally achievable. Interestingly, Totalförsvarets forskningsinstitut (FOI) presented an anomalous profile: while exhibiting the worst metadata field exposure in Tier 1 (92.0\% R2+ risk), a comparatively lower share of its documents contained actionable incremental saves, suggesting the use of PDF converters that flatten structural history but fail to strip embedded metadata tags.
 
 \section{Analysis and Discussion}
 The results of this study reveal a significant and systemic metadata hygiene gap across the Swedish public sector. The findings suggest that metadata leakage is not a random occurrence but is deeply influenced by organizational mandates, publication workflows, and a reliance on default software configurations.
@@ -346,52 +346,55 @@ Future research should examine the effectiveness of automated redaction tools wi
 \section{Conclusion}
 This study has demonstrated that metadata leakage in Swedish public-sector PDF documents is a pervasive and statistically significant security risk. By analyzing 2,816 documents across 30 authorities, we have shown that sensitive information—including Active Directory usernames, internal network paths, and third-party user identifiers—is frequently exposed to the public domain. The findings reveal a stark disparity between security-mandated agencies and broader societal institutions, highlighting the need for standardized, mandatory document sanitization protocols. As Sweden transitions into the NIS2 regulatory era, addressing this overlooked attack surface is essential for maintaining the integrity and confidentiality of the nation's digital governance.
 
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\newpage
 \section*{Appendix A: Institutional Sampling Frame}
 The following 30 Swedish public-sector authorities and institutions were selected for analysis, categorized by their primary operational mandate into three tiers of risk.
 
 \subsection*{Tier 1: Strategic \& Sovereign Risk}
 \begin{itemize}
-    \item Government Offices of Sweden
-    \item National Defence Radio Establishment (FRA)
-    \item Swedish Armed Forces
-    \item Swedish Civil Contingencies Agency (MSB)
-    \item Swedish Commission on Security and Integrity Protection (MSI)
-    \item Swedish Customs
-    \item Swedish Defence Research Agency (FOI)
-    \item Swedish Police Authority
-    \item Swedish Prosecution Authority
-    \item Swedish Security Service (S\"{A}PO)
+    \item Regeringskansliet
+    \item Försvarets radioanstalt (FRA)
+    \item Försvarsmakten
+    \item Myndigheten för samhällsskydd och beredskap (MSB)
+    \item Myndigheten för säkerhets- och integritetsskydd
+    \item Tullverket
+    \item Totalförsvarets forskningsinstitut (FOI)
+    \item Polismyndigheten
+    \item Åklagarmyndigheten
+    \item Säkerhetspolisen (SÄPO)
 \end{itemize}
 
 \subsection*{Tier 2: Systemic \& Structural Risk}
 \begin{itemize}
-    \item Agency for Digital Government (DIGG)
-    \item eHealth Agency
-    \item Swedish Authority for Privacy Protection (IMY)
-    \item Swedish Economic Crime Authority
-    \item Swedish Energy Agency
-    \item Swedish Mapping, Cadastral and Land Registration Authority
-    \item Swedish National Grid (Svenska Kraftn\"{a}t)
-    \item Swedish Post and Telecom Authority (PTS)
-    \item Swedish Transport Administration
-    \item Swedish Transport Agency
+    \item Myndigheten för digital förvaltning (DIGG)
+    \item E-hälsomyndigheten
+    \item Integritetsskyddsmyndigheten (IMY)
+    \item Ekobrottsmyndigheten
+    \item Energimyndigheten
+    \item Lantmäteriet
+    \item Affärsverket svenska kraftnät
+    \item Post- och telestyrelsen (PTS)
+    \item Trafikverket
+    \item Transportstyrelsen
 \end{itemize}
 
 \subsection*{Tier 3: Societal \& Privacy Risk}
 \begin{itemize}
-    \item Karolinska Institute
-    \item Lund University
-    \item National Board of Health and Welfare
-    \item Public Health Agency of Sweden
-    \item Statistics Sweden (SCB)
-    \item Stockholm University
-    \item Swedish Companies Registration Office
-    \item Swedish Pensions Agency
-    \item Swedish Social Insurance Agency
-    \item Swedish Tax Agency
+    \item Karolinska institutet
+    \item Lunds universitet
+    \item Socialstyrelsen
+    \item Folkhälsomyndigheten
+    \item Statistiska centralbyrån (SCB)
+    \item Stockholm universitet
+    \item Bolagsverket
+    \item Pensionsmyndigheten
+    \item Försäkringskassan
+    \item Skatteverket
 \end{itemize}
-
-\bibliographystyle{IEEEtran}
-\bibliography{references}
 
 \end{document}
