@@ -42,8 +42,6 @@ Despite growing awareness of metadata-related risks, limited empirical research 
 \subsection{Research Problem}
 The research problem is that publicly available PDFs may contain hidden metadata and structural traces that expose sensitive organisational information, but little is known about the scale, severity, and patterns of this exposure in the Swedish public sector. This study therefore investigates whether publicly available PDFs from Swedish public-sector organisations leak metadata or structural traces that may reveal information about internal systems, software environments, user patterns, document workflows, and organisational structures.
 
-This exposure is significant because such information may support organisational fingerprinting when collected across many documents. By combining exposed metadata from multiple files, attackers may build a broader picture of an organisation’s technical environment and working routines. This can support reconnaissance, spear-phishing attempts, and other targeted attacks.
-
 In addition, metadata exposure reflects broader questions of organisational security hygiene. Public-sector organisations often publish large numbers of documents through different systems and workflows, which increases the risk that embedded information is preserved unintentionally. Understanding how often such exposure occurs, what types of information are leaked, and how severe the exposure is can therefore provide insight into both cybersecurity risks and digital forensic implications.
 
 \subsection{Research Question}
@@ -65,7 +63,7 @@ The scope of the study is limited to documents that were publicly available thro
 
 
 \section{Related Work} % ~ 600 words Monia
-Research on embedded metadata has shown that publicly available documents can reveal information beyond their visible content. Metadata may include details about document authorship, software use, and editing history. While these details can be useful in digital forensics, they may also create security risks when exposed unintentionally. Several previous studies have examined this issue in public-sector and government-related contexts, showing that metadata leakage may support organisational fingerprinting, reconnaissance, and targeted attacks.
+Research on embedded metadata has shown that publicly available documents can reveal information beyond their visible content. Several previous studies have examined this issue in public-sector and government-related contexts, showing that metadata leakage may support organisational fingerprinting, reconnaissance, and targeted attacks.
 
 One relevant study is Mendelman’s work on metadata exposure in Estonian governmental organisations. The study examined publicly available documents from government websites and found that metadata could reveal information about internal users, software environments, and organisational practices \cite{mendelman2018}. This suggests how public documents can become a source of intelligence about an organisation, even when their visible content is not considered sensitive. Mendelman’s work is therefore closely related to the present study, as both examine how metadata in public-sector documents may expose internal organisational information.
 
@@ -254,8 +252,8 @@ Notably, even within Tier 1 (Strategic \& Sovereign Risk), performance ranges dr
 \multirow{2}{*}{Tier 2} & Best & Agency for Digital Government (DIGG) & 14.8\%  \\
  & Worst & Swedish Post and Telecom Authority (PTS) & 90.5\%  \\
 \hline
-\multirow{2}{*}{Tier 3} & Best & Public Health Agency of Sweden & 6.6\% (5/76) \\
- & Worst & Karolinska Institute & 83.6\% (51/61) \\
+\multirow{2}{*}{Tier 3} & Best & Public Health Agency of Sweden & 6.6\% \\
+ & Worst & Karolinska Institute & 83.6\% \\
 \hline
 \end{tabular}
 \end{table}
