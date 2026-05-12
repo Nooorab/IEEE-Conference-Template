@@ -162,6 +162,8 @@ In this study, document metadata is treated as a passive information exposure fa
     \item \textbf{R3 (High Risk):} Data elements directly charting internal network topographies or system schemas. Absolute file pathways mapped to local C: drives, mapped network shares, internal server IP schemas, organizational Active Directory usernames, or hidden architectural tokens.
 \end{itemize}
 
+Classification was automated using a Python script that applied deterministic pattern-matching rules to each extracted field--value pair, ensuring consistent and reproducible assignment across all 66,989 metadata records.
+
 \subsubsection{Structural content leakage} 
 To evaluate the extent to which sensitive information can be recovered from document histories, we utilized a qualitative forensic audit focused on "Revision Bloat" and substantive content restoration. Recovery success was measured through a three-stage filter: technical presence of incremental saves, forensic accessibility, and verifiably recovered text alterations (unique ADDED/REMOVED string pairs). To analyze the depth of the exposure, we identified "outlier" documents exhibiting extreme revision bloat, defined as documents harboring more than 50 hidden versions.
 
