@@ -21,7 +21,7 @@
 \maketitle
 
 \begin{abstract}
-% ~ 200 words
+This study investigates the scale and severity of metadata and structural content leakage in publicly available PDF documents published by the Swedish public sector. By collecting and analyzing 2,876 documents across 30 authorities, the analysis reveals that 80.0\% of documents contain incremental saves that can expose hidden revision history, while 48.6\% exhibit significant metadata exposure. The findings demonstrate a systemic metadata hygiene gap that is strongly correlated with institutional mandate, where societal authorities paradoxically leak more data than sovereign security entities. Furthermore, a temporal comparison reveals no statistically significant improvement in metadata hygiene during the transposition period of the NIS2 Directive, suggesting a persistent regulatory lag in addressing passive information exposure.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -29,15 +29,15 @@ metadata, exiftool, sweden, pdf forensics, cybersecurity, public sector, NIS2
 \end{IEEEkeywords}
 
 \section{Introduction} % ~ 1000 words Monia
-PDF files are widely used for public communication by Swedish government agencies and institutions. Their popularity comes from their ability to preserve document layout and maintain compatibility across different systems, making them a reliable format for publishing official materials such as reports, policy documents, guidelines, and administrative records \cite{iso32000}. In Sweden, this reliance on digital publication is closely connected to the broader transition toward digital governance and the principle of public access to official records, Offentlighetsprincipen, which gives the public and media the right to insight into the activities of public authorities \cite{swe_public_access}. This principle supports democratic transparency and accountability \cite{swe_public_access}. However, because large volumes of official documents are made publicly available, publication workflows also become part of the public sector’s security posture. If documents are not reviewed or sanitised before publication, they may expose information that was never intended for public access [Add source here].
+PDF files are widely used for public communication by Swedish government agencies and institutions. Their popularity comes from their ability to preserve document layout and maintain compatibility across different systems, making them a reliable format for publishing official materials such as reports, policy documents, guidelines, and administrative records \cite{iso32000}. In Sweden, this reliance on digital publication is closely connected to the broader transition toward digital governance and the principle of public access to official records, Offentlighetsprincipen, which gives the public and media the right to insight into the activities of public authorities \cite{swe_public_access}. This principle supports democratic transparency and accountability \cite{swe_public_access}. However, because large volumes of official documents are made publicly available, publication workflows also become part of the public sector’s security posture. If documents are not reviewed or sanitised before publication, they may expose information that was never intended for public access \cite{adhatarao2021}.
 
-Beyond the content visible to readers, PDF files often contain embedded metadata describing how the file was created, edited, converted, and processed \cite{spiegel2017}. This metadata may include author names, usernames, software names and versions, producer fields, and traces of internal workflows \cite{spiegel2017}. Although this information is usually not visible to ordinary readers, it can be extracted using common forensic and metadata-analysis tools [Add source here]. For public-sector organisations, this makes metadata hygiene an important but sometimes overlooked part of information security. Metadata hygiene refers to the practice of reviewing, minimising, or removing unnecessary embedded information before documents are published [Add source here]. In a public-sector publishing context, exposed metadata may indicate that document review and sanitisation routines are not applied consistently before publication. Poor metadata hygiene can therefore be viewed as a sign of gaps in organisational information security practices, rather than as an inherent flaw in the PDF format itself.
+Beyond the content visible to readers, PDF files often contain embedded metadata describing how the file was created, edited, converted, and processed \cite{spiegel2017}. This metadata may include author names, usernames, software names and versions, producer fields, and traces of internal workflows \cite{spiegel2017}. Although this information is usually not visible to ordinary readers, it can be extracted using common forensic and metadata-analysis tools \cite{spiegel2017}. For public-sector organisations, this makes metadata hygiene an important but sometimes overlooked part of information security. Metadata hygiene refers to the practice of reviewing, minimising, or removing unnecessary embedded information before documents are published \cite{hasegawa2022}. In a public-sector publishing context, exposed metadata may indicate that document review and sanitisation routines are not applied consistently before publication. Poor metadata hygiene can therefore be viewed as a sign of gaps in organisational information security practices, rather than as an inherent flaw in the PDF format itself.
 
-From a digital forensics perspective, metadata is valuable because it can provide insight into a document’s origin, creation process, and later modifications \cite{spiegel2017, [Add source here]}. At the same time, when this information is exposed unintentionally, it may create security risks by revealing details about internal systems, user environments, naming conventions, or organisational structures [Add source here]. These details may seem minor on their own, but when collected across many documents, they can support organisational fingerprinting by helping attackers build a broader picture of an organisation’s technical environment, software dependencies, document-management practices, and working routines. In this way, exposed metadata can expand the attack surface during reconnaissance. For example, staff names or usernames may support spear-phishing attempts, while software and version information may help attackers identify specific tools or possible weaknesses to target [Add source here]. Metadata leakage can therefore support more targeted attacks, even when the exposed information appears harmless on its own. Previous research has shown that metadata leakage can support infrastructure fingerprinting and targeted cyber attacks by providing contextual information about both individuals and systems \cite{adhatarao2021}, \cite{hasegawa2022}.
+From a digital forensics perspective, metadata is valuable because it can provide insight into a document’s origin, creation process, and later modifications \cite{spiegel2017, adhatarao2021}. At the same time, when this information is exposed unintentionally, it may create security risks by revealing details about internal systems, user environments, naming conventions, or organisational structures \cite{mendelman2018}. These details may seem minor on their own, but when collected across many documents, they can support organisational fingerprinting by helping attackers build a broader picture of an organisation’s technical environment, software dependencies, document-management practices, and working routines. In this way, exposed metadata can expand the attack surface during reconnaissance. For example, staff names or usernames may support spear-phishing attempts, while software and version information may help attackers identify specific tools or possible weaknesses to target \cite{hasegawa2022}. Metadata leakage can therefore support more targeted attacks, even when the exposed information appears harmless on its own. Previous research has shown that metadata leakage can support infrastructure fingerprinting and targeted cyber attacks by providing contextual information about both individuals and systems \cite{adhatarao2021}, \cite{hasegawa2022}.
 
-The risks are not limited to ordinary metadata fields. A central feature of the PDF format is its support for incremental updates \cite{iso32000}. When a PDF is modified, the file is not always rewritten from scratch. Instead, new or changed objects may be appended to the existing file, together with updated cross-reference information and trailer data \cite{iso32000}. This design can preserve earlier document states, meaning that deleted, overwritten, or finalised content may remain recoverable unless the document has been properly sanitised, flattened, or regenerated [Add source here]. As a result, a publicly available PDF may contain more than its visible final version. It may also include structural traces of earlier edits, hidden content, or previous versions of objects that were assumed to have been removed \cite{adhatarao2021}.
+The risks are not limited to ordinary metadata fields. A central feature of the PDF format is its support for incremental updates \cite{iso32000}. When a PDF is modified, the file is not always rewritten from scratch. Instead, new or changed objects may be appended to the existing file, together with updated cross-reference information and trailer data \cite{iso32000}. This design can preserve earlier document states, meaning that deleted, overwritten, or finalised content may remain recoverable unless the document has been properly sanitised, flattened, or regenerated \cite{iso32000}. As a result, a publicly available PDF may contain more than its visible final version. It may also include structural traces of earlier edits, hidden content, or previous versions of objects that were assumed to have been removed \cite{adhatarao2021}.
 
-Despite growing awareness of metadata-related risks, limited empirical research has focused specifically on metadata exposure in Swedish public-sector documents. This gap is especially relevant in a highly digitalised environment such as Sweden, where public organisations increasingly rely on digital communication and where regulatory frameworks such as the NIS2 Directive place greater emphasis on cyber security, risk management, and organisational accountability [Add source here]. Understanding how metadata is exposed in publicly available documents is therefore important not only from a forensic perspective, but also from the perspective of organisational security hygiene and regulatory readiness.
+Despite growing awareness of metadata-related risks, limited empirical research has focused specifically on metadata exposure in Swedish public-sector documents. This gap is especially relevant in a highly digitalised environment such as Sweden, where public organisations increasingly rely on digital communication and where regulatory frameworks such as the NIS2 Directive place greater emphasis on cyber security, risk management, and organisational accountability \cite{eu-nis2}. Understanding how metadata is exposed in publicly available documents is therefore important not only from a forensic perspective, but also from the perspective of organisational security hygiene and regulatory readiness.
 
 \subsection{Research Problem}
 The research problem is that publicly available PDFs may contain hidden metadata and structural traces that expose sensitive organisational information, but little is known about the scale, severity, and patterns of this exposure in the Swedish public sector. This study therefore investigates whether publicly available PDFs from Swedish public-sector organisations leak metadata or structural traces that may reveal information about internal systems, software environments, user patterns, document workflows, and organisational structures.
@@ -82,7 +82,7 @@ This study employs a mixed-methods design, combining quantitative measurement wi
 
 \subsection{Data Collection}
 \subsubsection{Exposure Categories}
-This study identifies two structurally distinct categories of unintended information exposure in PDF documents. The first is metadata field leakage; structured key-value attributes embedded in the document's Info Dictionary or XMP stream that reveal information about authorship, software, and infrastructure [KÄLLA]. The second is structural content leakage; the preservation of superseded document versions through the PDF incremental update mechanism [KÄLLA]. While both categories contribute to the overall attack surface, they differ in nature. While metadata field leakage primarily enables reconnaissance, structural content leakage may expose information the author explicitly intended to remove [KÄLLA]. These two categories are assessed separately throughout this study.
+This study identifies two structurally distinct categories of unintended information exposure in PDF documents. The first is metadata field leakage; structured key-value attributes embedded in the document's Info Dictionary or XMP stream that reveal information about authorship, software, and infrastructure \cite{iso32000}. The second is structural content leakage; the preservation of superseded document versions through the PDF incremental update mechanism \cite{iso32000}. While both categories contribute to the overall attack surface, they differ in nature. While metadata field leakage primarily enables reconnaissance, structural content leakage may expose information the author explicitly intended to remove \cite{adhatarao2021}. These two categories are assessed separately throughout this study.
 
 \subsubsection{Sampling Strategy}
 This study employs a two-stage purposive stratified sampling design, operating at both the institutional and document level.
@@ -146,14 +146,14 @@ Documents were collected according to a quota-based sampling frame to ensure bal
 \subsubsection{Processing and Integrity}
 To maintain a verifiable chain of custody, each acquired file underwent immediate forensic processing upon download. A SHA-256 hash was computed and recorded for every document, serving as a unique identifier and ensuring that all subsequent analysis was performed on the exact byte-sequence as collected. Duplicate files, identified by a matching hash, were excluded from analysis to prevent double-counting.
 
-Metadata extraction was performed using ExifTool (v12.x), a widely adopted command-line tool validated in prior digital forensics literature [KÄLLA]. ExifTool was invoked per-file in JSON output mode, enabling the extraction of all available metadata fields regardless of schema. The resulting output was normalized and stored in a relational long-format CSV structure, where each row represents a single field–value pair linked to the file's SHA-256 hash, authority, and collection period. This schema enables systematic cross-authority and cross-field comparison.
+Metadata extraction was performed using ExifTool (v12.x), a widely adopted command-line tool validated in prior digital forensics literature \cite{spiegel2017}. ExifTool was invoked per-file in JSON output mode, enabling the extraction of all available metadata fields regardless of schema. The resulting output was normalized and stored in a relational long-format CSV structure, where each row represents a single field–value pair linked to the file's SHA-256 hash, authority, and collection period. This schema enables systematic cross-authority and cross-field comparison.
 
 In parallel, the binary structure of each PDF was analyzed to detect the presence of incremental update layers. Detection was performed by counting occurrences of the \texttt{\%\%EOF} end-of-file marker in the raw byte stream, as each appended revision layer introduces a new cross-reference table and a corresponding \texttt{\%\%EOF} marker. To eliminate false positives, the linearization status of each document was evaluated prior to classification: a linearized PDF inherently contains two \texttt{\%\%EOF} markers as part of its standard structure, and was therefore only flagged if the marker count exceeded two. Non-linearized documents were flagged at a count greater than one. Documents satisfying these criteria were tagged for further forensic examination. 
 
 \subsection{Analytical Framework}
 
 \subsubsection{Metadata Classification}
-In this study, document metadata is treated as a passive information exposure factor. To systematically classify the confidentiality risk posed by each identified metadata field, this study applies the R0–R3 risk taxonomy. The taxonomy is grounded in the risk assessment principles established by NIST SP 800-60 and FIPS 199. NIST SP 800-60 provides a framework for mapping information types to security impact levels based on the potential consequences of unauthorized disclosure, while FIPS 199 defines the three security objectives (confidentiality, integrity, and availability) and establishes Low, Moderate, and High as the standardized impact categories [KÄLLA]. The R0–R3 taxonomy operationalizes these impact levels in a four-point scale adapted specifically for metadata field classification, where each level reflects the degree to which a disclosed field could enable identification, targeting, or infrastructure mapping by an adversary. The following categories were applied:
+In this study, document metadata is treated as a passive information exposure factor. To systematically classify the confidentiality risk posed by each identified metadata field, this study applies the R0–R3 risk taxonomy. The taxonomy is grounded in the risk assessment principles established by NIST SP 800-60 and FIPS 199. NIST SP 800-60 provides a framework for mapping information types to security impact levels based on the potential consequences of unauthorized disclosure, while FIPS 199 defines the three security objectives (confidentiality, integrity, and availability) and establishes Low, Moderate, and High as the standardized impact categories. The R0–R3 taxonomy operationalizes these impact levels in a four-point scale adapted specifically for metadata field classification, where each level reflects the degree to which a disclosed field could enable identification, targeting, or infrastructure mapping by an adversary. The following categories were applied:
 
 \begin{itemize}
     \item \textbf{R0 (Non-Sensitive):} Benign structural parameters. File dimensions, PDF version numbers, page counts.
@@ -175,7 +175,7 @@ For the purpose of statistical validity, we established a "Significant Risk" thr
 The null hypothesis posited that metadata leakage rates are independent of an organization's Tier, while the alternative hypothesis asserted a systemic correlation between organizational mission and digital hygiene. All calculations were performed using Python's \texttt{scipy.stats} library, with the significance threshold set at $p < 0.05$.
 
 \subsubsection{Temporal Comparison}
-To evaluate the chronological evolution of metadata hygiene relative to the enactment of the Cybersäkerhetslagen, we executed a longitudinal Pearson’s Chi-Square ($\chi^2$) test of independence. The statistical matrix was constructed as a $3 \times 2$ contingency table, mapping the three distinct temporal epochs against the binary R2+ risk classification.
+To evaluate the chronological evolution of metadata hygiene relative to the impending enactment of the Cybers\"{a}kerhetslagen, we executed a longitudinal Pearson’s Chi-Square ($\chi^2$) test of independence. The statistical matrix was constructed as a $2 \times 2$ contingency table, mapping the Pre-NIS2 baseline epoch and the NIS2 Preparation epoch against the binary R2+ risk classification.
 
 Consistent with our sectoral analysis, we utilized the aggregated "Significant Risk" (R2+) threshold to satisfy the Chi-Square requirement for expected cell frequencies ($E \geq 5$). The null hypothesis posited that metadata exposure rates are independent of the document publication period, indicating a lack of programmatic response to legislative pressure. Conversely, the alternative hypothesis asserted that document hygiene improved significantly in correlation with the Swedish legislative lifecycle. Significance was evaluated at the $p < 0.05$ threshold.
 
@@ -189,7 +189,7 @@ The data collection process was used to minimise impact on the targeted websites
 \section{Results} % ~ 1200 words
 
 \subsection{Overall Risk Distribution}
-In accordance with the metadata risk taxonomy defined in the Methodology, all 66,989 extracted metadata fields were classified from R0 to R3. (Note: Pure filesystem attributes generated by the extraction tool, such as FileSize and FileModifyDate, were excluded from this classification count). At the document level, 38.1\% of documents exhibited R2 (Medium Risk) as their highest risk factor, and 1.7\% exhibited R3 (High Risk). 
+In accordance with the metadata risk taxonomy defined in the Methodology, all 66,989 extracted metadata fields were classified from R0 to R3. (Note: Pure filesystem attributes generated by the extraction tool, such as FileSize and FileModifyDate, were excluded from this classification count). At the document level, 43.0\% of documents exhibited R2 (Medium Risk) as their highest risk factor, and 5.4\% exhibited R3 (High Risk). 
 
 Figure \ref{fig:tier_risk} presents the distribution of R1, R2, and R3 risk levels across the three institutional tiers.
 
@@ -219,9 +219,7 @@ For the purpose of statistical validity, we established a "Significant Risk" thr
 
 The null hypothesis posited that metadata leakage rates are independent of an organization's Tier, while the alternative hypothesis asserted a systemic correlation between organizational mission and digital hygiene. All calculations were performed using Python's \texttt{scipy.stats} library, with the significance threshold set at $p < 0.05$.
 
-As shown in Table \ref{tab:chi_tier}, Tier 2 (Systemic \& Structural Risk) exhibited the highest rate of significant risk exposure (44.2\%), followed closely by Tier 1 (Strategic \& Sovereign Risk) at 41.0\%. Tier 3 (Societal \& Privacy Risk) demonstrated the lowest exposure rate at 33.4\%. 
-
-The Chi-Square analysis reveals that the difference between Tier 1 and Tier 2 is not statistically significant ($p = 0.116$), suggesting that high-security authorities (Tier 1) perform no better than critical infrastructure entities (Tier 2) regarding metadata hygiene. However, the comparison between Tier 1 and Tier 3 yielded a highly significant result ($p = 0.0005$), indicating that societal and academic institutions paradoxically maintain better metadata hygiene than sovereign defense authorities.
+As shown in Table \ref{tab:chi_tier}, Tier 2 (Systemic \& Structural Risk) exhibited the highest rate of significant risk exposure (56.7\%), compared to 49.5\% in Tier 1 (Strategic \& Sovereign Risk) and 37.9\% in Tier 3 (Societal \& Privacy Risk). Both comparisons against Tier 1 yielded statistically significant results, rejecting the null hypothesis.
 
 \begin{table}[htbp]
 \centering
@@ -231,10 +229,10 @@ The Chi-Square analysis reveals that the difference between Tier 1 and Tier 2 is
 \hline
 \textbf{Comparison} & \textbf{R2+ Exposure} & \textbf{$\chi^2$} & \textbf{p-value} & \textbf{Sig.} \\
 \hline
-Tier 1 vs. Tier 2 & 41.0\% vs 44.2\% & 2.47 & 0.1160 & ns \\
-Tier 1 vs. Tier 3 & 41.0\% vs 33.4\% & 12.04 & 0.0005 & *** \\
+Tier 1 vs. Tier 2 & 49.5\% vs 56.7\% & 10.58 & 0.0050 & ** \\
+Tier 1 vs. Tier 3 & 49.5\% vs 37.9\% & 25.09 & < 0.0001 & *** \\
 \hline
-\multicolumn{5}{l}{\footnotesize Significance levels: * $p < 0.05$, ** $p < 0.01$, *** $p < 0.001$, ns = not significant} \\
+\multicolumn{5}{l}{\footnotesize Significance levels: * $p < 0.05$, ** $p < 0.01$, *** $p < 0.001$} \\
 \end{tabular}
 \end{table}
 
@@ -276,19 +274,17 @@ Figure \ref{fig:temporal_risk} visualizes the risk distribution across the three
     \label{fig:temporal_risk}
 \end{figure}
 
-The statistical analysis (Table \ref{tab:chi_temporal}) reveals a near-stagnant trend in significant risk exposure: 41.1\% during the Pre-NIS2 baseline, 39.5\% during the NIS2 Preparation period, and 39.8\% after the enactment of the Cybers\"{a}kerhetslagen (Post-2026). The $3 \times 2$ Chi-Square test across all three temporal epochs yielded no statistical significance ($p = 0.727$). 
-
-Therefore, we fail to reject the null hypothesis. This indicates that neither the impending deadline of the NIS2 Directive nor its actual legal enactment in 2026 produced any measurable improvement in the metadata hygiene practices of Swedish public authorities.
+The statistical analysis (Table \ref{tab:chi_temporal}) indicates a slight decrease in significant risk exposure from 52.2\% (Pre-NIS2) to 47.5\% (NIS2 Preparation). However, this reduction did not achieve statistical significance at the $p < 0.05$ threshold ($p = 0.087$). Therefore, we fail to reject the null hypothesis, suggesting that metadata hygiene practices did not improve significantly during the NIS2 transposition period.
 
 \begin{table}[htbp]
 \centering
-\caption{Chi-Square Test Results: Temporal Comparison ($3 \times 2$ Test on R2+ Risk)}
+\caption{Chi-Square Test Results: Temporal Comparison (R2+ Risk)}
 \label{tab:chi_temporal}
 \begin{tabular}{|l|c|c|c|c|}
 \hline
-\textbf{Epochs} & \textbf{Exposure Rates} & \textbf{$\chi^2$} & \textbf{p-value} & \textbf{Sig.} \\
+\textbf{Comparison} & \textbf{R2+ Exposure} & \textbf{$\chi^2$} & \textbf{p-value} & \textbf{Sig.} \\
 \hline
-All 3 Periods & 41.1\%, 39.5\%, 39.8\% & 0.64 & 0.7274 & ns \\
+2020-2023 vs. 2024-2025 & 52.2\% vs 47.5\% & 4.88 & 0.0870 & ns \\
 \hline
 \multicolumn{5}{l}{\footnotesize Significance levels: * $p < 0.05$, ns = not significant} \\
 \end{tabular}
@@ -369,7 +365,7 @@ The following 30 Swedish public-sector authorities and institutions were selecte
     \item Swedish Authority for Privacy Protection (IMY)
     \item Swedish Economic Crime Authority
     \item Swedish Energy Agency
-    \item Swedish Financial Supervisory Authority (FI)
+    \item Swedish Financial Supervisory Authority (FI)\footnote{Finansinspektionen (FI) was added as an 11th targeted supplementary authority during the data collection phase to ensure sufficient representation of the financial sector's regulatory body.}
     \item Swedish Mapping, Cadastral and Land Registration Authority
     \item Swedish National Grid (Svenska Kraftn\"{a}t)
     \item Swedish Post and Telecom Authority (PTS)
@@ -383,6 +379,7 @@ The following 30 Swedish public-sector authorities and institutions were selecte
     \item Lund University
     \item National Board of Health and Welfare
     \item Public Health Agency of Sweden
+    \item Statistics Sweden (SCB)
     \item Stockholm University
     \item Swedish Companies Registration Office
     \item Swedish Pensions Agency
