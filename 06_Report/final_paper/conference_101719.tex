@@ -1,7 +1,6 @@
 \documentclass[conference]{IEEEtran}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 \IEEEoverridecommandlockouts
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
@@ -186,7 +185,7 @@ This study examines only PDF documents that were publicly available through offi
 
 All collected PDF files and extracted metadata were stored locally on encrypted workstations and will be deleted upon completion of the research. Where personal names, usernames, or sensitive technical details appear in reported findings, these are anonymized where appropriate. The collected files and any sensitive extracted metadata will not be redistributed.
 
-Data collection was conducted to minimise impact on targeted servers. The collection script observed each domain's robots.txt file, restricted crawling to permitted paths, and applied a random request delay of 3.0–5.0 seconds. Analysis scripts will be made available through GitHub for transparency and replication. Any processing of personal data identified during the study is conducted under the research exemption provided by GDPR Article 89, which permits the processing of personal data for scientific research purposes subject to appropriate safeguards\cite{eu-gdpr}.
+Data collection was conducted to minimise impact on targeted servers. The collection script observed each domain's robots.txt file, restricted crawling to permitted paths, and applied a random request delay of 3.0–5.0 seconds. Analysis scripts will be made available through GitHub for transparency and replication. Any processing of personal data identified during the study is conducted under the research exemption provided by GDPR Article 89, which permits the processing of personal data for scientific research purposes subject to appropriate safeguards\cite{eu-gdpr}. 
 
 \section{Results} % ~ 1200 words
 
@@ -297,7 +296,7 @@ Therefore, we reject the null hypothesis. The data indicates a measurable reduct
 To address RQ3, the study evaluated the prevalence of incremental update layers across the dataset. As defined in the Methodology, documents were flagged for structural content leakage if they contained \texttt{\%\%EOF} marker counts exceeding the standard threshold for their linearization status: more than two for linearized documents, or more than one for non-linearized documents.
 
 \subsubsection{Prevalence and Tier Distribution}
-The analysis revealed that structural content leakage is a significant phenomenon across the Swedish public sector, with 41.4\% (1,177/2,845) of all sampled documents containing at least one appended incremental update layer beyond their standard structural requirements. This prevalence suggests that ``saving'' rather than ``exporting'' is a common publication workflow, and that many organizations do not flatten or regenerate PDFs before publication.
+The analysis revealed that structural content leakage is a significant phenomenon across the Swedish public sector, with 41.4\% (1,177/2,876) of all sampled documents containing at least one appended incremental update layer beyond their standard structural requirements. This prevalence suggests that ``saving'' rather than ``exporting'' is a common publication workflow, and that many organizations do not flatten or regenerate PDFs before publication.
 
 Tier 3 (Societal \& Privacy Risk) exhibited the highest rate of structural leakage at 48.4\%, followed by Tier 2 (Systemic \& Structural Risk) at 42.4\%, while Tier 1 (Strategic \& Sovereign Risk) maintained a lower rate of 34.7\%. 
 
