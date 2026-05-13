@@ -50,7 +50,7 @@ Understanding how often such exposure occurs, what types of information are leak
 \subsection{Research Question}
 This study is guided by the following main research question:
 
-To what extent, and with what severity, do publicly available PDF documents from Swedish public-sector organisations expose sensitive information through metadata and structural content leakage?
+\textit{To what extent, and with what severity, do publicly available PDF documents from Swedish public-sector organisations expose sensitive information through metadata and structural content leakage?}
 
 The following sub-questions support the main research question:
 \begin{itemize}
@@ -82,8 +82,6 @@ Together, these studies show that metadata leakage in publicly available documen
 This study employs a mixed-methods design, combining quantitative measurement with qualitative forensic analysis. The quantitative component establishes the prevalence and severity of metadata leakage at scale, enabling statistical comparison across institutional tiers and temporal strata. The qualitative component examines the specific content recoverable from incremental update layers, providing interpretive depth that prevalence rates alone cannot capture. 
 
 \subsection{Data Collection}
-\subsubsection{Exposure Categories}
-This study identifies two structurally distinct categories of unintended information exposure in PDF documents. The first is metadata field leakage; structured key-value attributes embedded in the document's Info Dictionary or XMP stream that reveal information about authorship, software, and infrastructure. The second is structural content leakage; the preservation of superseded document versions through the PDF incremental update mechanism. While both categories contribute to the overall attack surface, they differ in nature. While metadata field leakage primarily enables reconnaissance, structural content leakage may expose information the author explicitly intended to remove. These two categories are assessed separately throughout this study.
 
 \subsubsection{Sampling Strategy}
 This study employs a two-stage purposive stratified sampling design, operating at both the institutional and document level.
@@ -141,7 +139,7 @@ A custom automated pipeline was constructed for document discovery, acquisition,
 The primary collection tool was a Python-based crawler using \texttt{BeautifulSoup4} for HTML parsing. The crawler enforced a stay-within-domain policy to ensure data was only collected from targeted servers. Navigation prioritized high-value publication directories, including /publikationer, /rapporter, and /arkiv. For authorities where the main crawler was blocked by WAF infrastructure (Radware or Cloudflare) or where documents were only accessible via JavaScript-rendered search interfaces, dedicated focused scrapers were constructed using direct URL injection or Playwright-based pagination.
 
 \subsubsection{Acquisition and Filtering}
-Documents were collected according to a quota-based sampling frame to ensure balanced representation across the targeted time periods. A quota of 50 documents per authority and temporal stratum was enforced to ensure balanced representation across both institutions and time periods, and to prevent high-volume publishers from dominating the dataset. Where an authority did not produce sufficient documents within a given stratum, all available documents were collected without enforcing the quota. Publication year was determined by evaluating, in order of priority: the URL path, the HTTP Last-Modified response header, and the XMP:CreateDate internal metadata field.
+A quota of 50 documents per authority and temporal stratum was enforced to ensure balanced representation across both institutions and time periods, and to prevent high-volume publishers from dominating the dataset. Where an authority did not produce sufficient documents within a given stratum, all available documents were collected without enforcing the quota. Publication year was determined by evaluating, in order of priority: the URL path, the HTTP Last-Modified response header, and the XMP:CreateDate internal metadata field.
 
 \subsubsection{Processing and Integrity}
 To maintain a verifiable chain of custody, each acquired file underwent immediate forensic processing upon download. A SHA-256 hash was computed and recorded for every document, serving as a unique identifier and ensuring that all subsequent analysis was performed on the exact byte-sequence as collected. Duplicate files, identified by a matching hash, were excluded from analysis to prevent double-counting.
@@ -151,6 +149,9 @@ Metadata extraction was performed using ExifTool (v12.x), a widely adopted comma
 In parallel, the binary structure of each PDF was analyzed to detect the presence of incremental update layers. Detection was performed by counting occurrences of the \texttt{\%\%EOF} end-of-file marker in the raw byte stream, as each appended revision layer introduces a new cross-reference table and a corresponding \texttt{\%\%EOF} marker. To eliminate false positives, the linearization status of each document was evaluated prior to classification: a linearized PDF inherently contains two \texttt{\%\%EOF} markers as part of its standard structure, and was therefore only flagged if the marker count exceeded two. Non-linearized documents were flagged at a count greater than one. Documents satisfying these criteria were tagged for further forensic examination. 
 
 \subsection{Analytical Framework}
+
+\subsubsection{Exposure Categories}
+This study identifies two structurally distinct categories of unintended information exposure in PDF documents. The first is metadata field leakage; structured key-value attributes embedded in the document's Info Dictionary or XMP stream that reveal information about authorship, software, and infrastructure. The second is structural content leakage; the preservation of superseded document versions through the PDF incremental update mechanism. While both categories contribute to the overall attack surface, they differ in nature. While metadata field leakage primarily enables reconnaissance, structural content leakage may expose information the author explicitly intended to remove. These two categories are assessed separately throughout this study.
 
 \subsubsection{Metadata Classification}
 In this study, document metadata is treated as a passive information exposure factor. To systematically classify the confidentiality risk posed by each identified metadata field, this study applies the R0–R3 risk taxonomy. The taxonomy is grounded in the risk assessment principles established by NIST SP 800-60 and FIPS 199. NIST SP 800-60 provides a framework for mapping information types to security impact levels based on the potential consequences of unauthorized disclosure, while FIPS 199 defines the three security objectives (confidentiality, integrity, and availability) and establishes Low, Moderate, and High as the standardized impact categories [KÄLLA]. The R0–R3 taxonomy operationalizes these impact levels in a four-point scale adapted specifically for metadata field classification, where each level reflects the degree to which a disclosed field could enable identification, targeting, or infrastructure mapping by an adversary. The following categories were applied:
@@ -164,7 +165,7 @@ In this study, document metadata is treated as a passive information exposure fa
 
 Classification was automated using a Python script that applied deterministic pattern-matching rules to each extracted field--value pair, ensuring consistent and reproducible assignment across all 66,989 metadata records.
 
-\subsubsection{Structural content leakage} 
+\subsubsection{Structural Content Leakage} 
 To evaluate the extent to which sensitive information can be recovered from document histories, we utilized a qualitative forensic audit focused on "Revision Bloat" and substantive content restoration. Recovery success was measured through a three-stage filter: technical presence of incremental saves, forensic accessibility, and verifiably recovered text alterations (unique ADDED/REMOVED string pairs). To analyze the depth of the exposure, we identified "outlier" documents exhibiting extreme revision bloat, defined as documents harboring more than 50 hidden versions.
 
 \subsection{Statistical Framework}
@@ -181,14 +182,14 @@ To evaluate the chronological evolution of metadata hygiene relative to the enac
 
 Consistent with our sectoral analysis, we utilized the aggregated ``Significant Risk'' (R2+) threshold to satisfy the Chi-Square requirement for expected cell frequencies ($E \geq 5$). The null hypothesis posited that metadata exposure rates are independent of the document publication period, indicating a lack of programmatic response to legislative pressure. Conversely, the alternative hypothesis asserted that document hygiene improved significantly in correlation with the Swedish legislative lifecycle. Significance was evaluated at the $p < 0.05$ threshold.
 
-\section{Ethical Considerations} % ~ 200 words Monia 
+\subsection{Ethical Considerations}
 This study examines only PDF documents that were publicly available through official websites and online archives at the time of collection. Public availability does not remove the responsibility to handle data carefully, particularly where metadata may contain names, usernames, software details, or other organisational information.
 
 All collected PDF files and extracted metadata were stored locally on encrypted workstations and will be deleted upon completion of the research. Where personal names, usernames, or sensitive technical details appear in reported findings, these are anonymized where appropriate. The collected files and any sensitive extracted metadata will not be redistributed.
 
-Data collection was conducted to minimise impact on targeted servers. The collection script observed each domain's robots.txt file, restricted crawling to permitted paths, and applied a random request delay of 3.0–5.0 seconds. Analysis scripts will be made available through GitHub for transparency and replication. Any processing of personal data identified during the study is conducted under the research exemption provided by GDPR Article 89, which permits the processing of personal data for scientific research purposes subject to appropriate safeguards\cite{eu-gdpr}.
+Data collection was conducted to minimise impact on targeted servers. The collection script observed each domain's robots.txt file, restricted crawling to permitted paths, and applied a random request delay of 3.0–5.0 seconds. Analysis scripts will be made available through GitHub for transparency and replication. Any processing of personal data identified during the study is conducted under the research exemption provided by GDPR Article 89, which permits the processing of personal data for scientific research purposes subject to appropriate safeguards \cite{eu-gdpr}.
 
-\section{Results} % ~ 1200 words
+\section{Results}
 
 \subsection{Overall Risk Distribution}
 In accordance with the metadata risk taxonomy defined in the Methodology, all 66,989 extracted metadata fields were classified from R0 to R3. At the document level, 43.0\% of documents exhibited R2 (Medium Risk) as their highest risk factor, and 5.4\% exhibited R3 (High Risk). 
@@ -215,7 +216,6 @@ Figure \ref{fig:data_type_exposure} visualizes this breakdown. Personal names we
 \end{figure}
 
 \subsection{Sectoral Tier Comparison}
-To quantitatively evaluate the disparity in metadata hygiene across the Swedish administrative landscape, we employed Pearson’s Chi-Square ($\chi^2$) tests of independence. 
 
 As shown in Table \ref{tab:chi_tier}, Tier 2 (Systemic \& Structural Risk) exhibited the highest rate of significant risk exposure (56.7\%), compared to 49.5\% in Tier 1 (Strategic \& Sovereign Risk) and 37.9\% in Tier 3 (Societal \& Privacy Risk). Both comparisons against Tier 1 yielded statistically significant results, rejecting the null hypothesis.
 
@@ -261,7 +261,6 @@ Notably, even within Tier 1 (Strategic \& Sovereign Risk), performance ranges dr
 \end{table}
 
 \subsection{Temporal Comparison}
-To evaluate the chronological evolution of metadata hygiene relative to the enactment of the Cybers\"{a}kerhetslagen, we executed a longitudinal Pearson's Chi-Square ($\chi^2$) test of independence.
 
 Figure \ref{fig:temporal_risk} visualizes the risk distribution across the three temporal epochs. Table \ref{tab:chi_temporal} presents the results of the $3 \times 2$ Chi-Square test across all three periods.
 
@@ -294,7 +293,7 @@ Therefore, we reject the null hypothesis. The data indicates a measurable reduct
 \end{table}
 
 \subsection{Structural Content Leakage}
-To address RQ3, the study evaluated the prevalence of incremental update layers across the dataset. As defined in the Methodology, documents were flagged for structural content leakage if they contained \texttt{\%\%EOF} marker counts exceeding the standard threshold for their linearization status: more than two for linearized documents, or more than one for non-linearized documents.
+To address RQ3, the study evaluated the prevalence of incremental update layers across the dataset using the linearization-aware detection method defined in Section~III.
 
 \subsubsection{Prevalence and Tier Distribution}
 The analysis revealed that structural content leakage is a significant phenomenon across the Swedish public sector, with 41.4\% (1,177/2,845) of all sampled documents containing at least one appended incremental update layer beyond their standard structural requirements. This prevalence suggests that ``saving'' rather than ``exporting'' is a common publication workflow, and that many organizations do not flatten or regenerate PDFs before publication.
@@ -329,32 +328,28 @@ Conversely, Tullverket emerged as a positive outlier, with only 3 of its 121 sam
 \section{Analysis and Discussion}
 The results demonstrate that metadata leakage in Swedish public-sector PDF documents is both pervasive and measurable, with patterns that are systemic rather than incidental.
 
-\subsection{RQ1 — Institutional Tier and Metadata Hygiene}
+\subsection{RQ1 --- Institutional Tier and Metadata Hygiene}
 The chi-square analysis confirms a statistically significant difference in R2+ exposure across tiers, suggesting that institutional mandate is associated with metadata hygiene. However, the aggregate tier result conceals substantial intra-tier variance that the classification alone cannot explain.
 SÄPO's low exposure consists almost entirely of software version identifiers, with one exception: a cross-agency template path referencing a Kommerskollegium IIS server, illustrating that even well-managed pipelines can carry residual third-party traces.
-FOI most directly challenges the tier model. Despite its Tier 1 mandate, it exhibits the highest personal name exposure of any institution: 85 unique individuals through the Author field alone. Its incremental update rate is low, yet one document's binary history contained a removed Exportkontroll field and an internal printer instruction — recoverable despite being absent from the published version. 
+FOI most directly challenges the tier model. Despite its Tier 1 mandate, it exhibits the highest personal name exposure of any institution: 85 unique individuals through the Author field alone. Its incremental update rate is low, yet one document's binary history contained a removed Exportkontroll field and an internal printer instruction---recoverable despite being absent from the published version. 
 Regeringskansliet's publications exposed the complete file path of its print production server in one document, alongside the name of its individual author. Across the sample, 45 Author field entries included internal investigation dossier numbers linking documents to named government inquiries. 
-Polismyndigheten carries a high number of R3-classified EmbeddedHref fields, including a polisen2015 directory reference and a file prefixed 'rps\_test' — artefacts of Rikspolisstyrelsen, the predecessor authority dissolved in 2015, persisting in current templates. One Author entry combines individual attribution with unit identification: "Anna Andersson (NOA)" — the National Operations Department.
-Security mandate is therefore associated with lower aggregate exposure but is an insufficient predictor at the document level. Folkhälsomyndigheten is an exception, achieving the lowest R2+ rate in the dataset. Even so, a single ArticulatePath field exposed http://portal.fohm.local/ — illustrating that one infrastructure leak may enable reconnaissance even within an otherwise sanitized portfolio.
+Polismyndigheten carries a high number of R3-classified EmbeddedHref fields, including a polisen2015 directory reference and a file prefixed 'rps\_test'---artefacts of Rikspolisstyrelsen, the predecessor authority dissolved in 2015, persisting in current templates. One Author entry combines individual attribution with unit identification: "Anna Andersson (NOA)"---the National Operations Department.
+Security mandate is therefore associated with lower aggregate exposure but is an insufficient predictor at the document level. Folkhälsomyndigheten is an exception, achieving the lowest R2+ rate in the dataset. Even so, a single ArticulatePath field exposed http://portal.fohm.local/---illustrating that one infrastructure leak may enable reconnaissance even within an otherwise sanitized portfolio.
 Beyond author names, identifiers from Mendeley, Grammarly, and Articulate Storyline were found in documents from authorities with otherwise clean metadata, enabling cross-document attribution across platforms. Standard sanitization tools are typically configured for well-known fields and may not detect identifiers of this type.
 
-\subsection{RQ2 — Temporal Patterns and the NIS2 Trajectory}
-The temporal analysis reveals a statistically significant downward trend in R2+ exposure across the three legislative periods. However, the Post-NIS2 stratum contains substantially fewer documents than the preceding periods, as fewer publications had been released within this shorter window at the time of collection. The observed reduction may therefore reflect this compositional difference in addition to — or instead of — a genuine behavioural response to regulatory pressure. Future replication with a larger Post-NIS2 sample is necessary to confirm whether the trend is durable.
-Even interpreted conservatively, a 44.9 procent R2+ exposure rate after the enactment of Cybersäkerhetslagen indicates that legislative compliance does not translate automatically into document-level sanitization practices.
+\subsection{RQ2 --- Temporal Patterns and the NIS2 Trajectory}
+The temporal analysis reveals a statistically significant downward trend in R2+ exposure across the three legislative periods. However, the Post-NIS2 stratum contains substantially fewer documents than the preceding periods, as fewer publications had been released within this shorter window at the time of collection. The observed reduction may therefore reflect this compositional difference in addition to---or instead of---a genuine behavioural response to regulatory pressure. Future replication with a larger Post-NIS2 sample is necessary to confirm whether the trend is durable.
+Even interpreted conservatively, the post-enactment exposure rate indicates that legislative compliance does not translate automatically into document-level sanitization practices.
 
-\subsection{RQ3 — Recoverability of Unintended Information from Incremental Updates}
-Of the 1,177 documents containing true incremental update layers, forensic extraction identified verifiable content changes in 228. The majority were editorial, carrying limited forensic significance in isolation. Among the 228, 27 contained substantive removals, as described in the Results — including a named publisher removed from an MSB publication, personal data processing descriptions removed from an Åklagarmyndigheten document, and internal production instructions removed from an FOI report.
-These findings must be contextualised within the scope of the study. The documents examined were published for public access and do not in most cases contain highly sensitive visible content. However, the same mechanism applies to documents released on request under Offentlighetsprincipen, where redaction targets the visible layer while the incremental history may remain intact. The 41.4 procent prevalence of unsanitized PDFs indicates that many authorities do not apply flattening before release — a direct implication for cases where redaction is not merely cosmetic, and an important direction for future research. When an organisation removes a named publisher or redacts internal responsibilities, but that information remains recoverable in the binary stream, it highlights a critical gap: Swedish public authorities are largely relying on the PDF format's convenience without understanding its binary persistence.
+\subsection{RQ3 --- Recoverability of Unintended Information from Incremental Updates}
+Of the 1,177 documents containing true incremental update layers, forensic extraction identified verifiable content changes in 228. The majority were editorial, carrying limited forensic significance in isolation. Among the 228, 27 contained substantive removals---spanning personal data handling descriptions, named individuals, and internal production instructions---demonstrating that the incremental update mechanism can preserve precisely the information that authors intended to retract.
+These findings must be contextualised within the scope of the study. The documents examined were published for public access and do not in most cases contain highly sensitive visible content. However, the same mechanism applies to documents released on request under Offentlighetsprincipen, where redaction targets the visible layer while the incremental history may remain intact. The 41.4\% prevalence of unsanitized PDFs indicates that many authorities do not apply flattening before release---a direct implication for cases where redaction is not merely cosmetic, and an important direction for future research. When an organisation removes content but that information remains recoverable in the binary stream, it highlights a critical gap: Swedish public authorities are largely relying on the PDF format's convenience without understanding its binary persistence.
 
 \section{Limitations and Future Work}
-This study is limited to documents that were publicly available at the time of collection. The Post-NIS2 temporal stratum is smaller and covers a shorter period than preceding strata, and the observed downward trend in exposure should be replicated with a larger sample before a durable shift can be confirmed. Future research should examine whether the unsanitized publication pipelines identified here are also used when documents are released on request under Offentlighetsprincipen — where redaction applied to visible content may leave the incremental update history intact and recoverable. Additionally, future work should assess the effectiveness of automated metadata sanitization tools in Swedish public-sector contexts, and whether expanding the scope to municipal-level authorities reveals further patterns of exposure.
+This study is limited to documents that were publicly available at the time of collection. The Post-NIS2 temporal stratum is smaller and covers a shorter period than preceding strata, and the observed downward trend in exposure should be replicated with a larger sample before a durable shift can be confirmed. Future research should examine whether the unsanitized publication pipelines identified here are also used when documents are released on request under Offentlighetsprincipen---where redaction applied to visible content may leave the incremental update history intact and recoverable. Additionally, future work should assess the effectiveness of automated metadata sanitization tools in Swedish public-sector contexts, and whether expanding the scope to municipal-level authorities reveals further patterns of exposure.
 
 \section{Conclusion}
-This study demonstrates that metadata leakage in publicly available Swedish public-sector PDFs is both pervasive and systemic. Across 2,876 documents from 30 authorities, sensitive information — including personal names, Active Directory usernames, internal file paths, and third-party platform identifiers — was recoverable through standard forensic extraction. Institutional tier is associated with hygiene differences but is an insufficient predictor at the document level; the evidence points to publication workflow design as the primary driver of exposure. The structural content analysis confirms that content explicitly removed before publication remains recoverable from the binary stream. The positive outliers in the dataset confirm that thorough sanitization is operationally achievable, making this a policy and workflow problem rather than a technological one.
-
-
-
-
+This study demonstrates that metadata leakage in publicly available Swedish public-sector PDFs is both pervasive and systemic. Across 2,876 documents from 30 authorities, sensitive information---including personal names, Active Directory usernames, internal file paths, and third-party platform identifiers---was recoverable through standard forensic extraction. Institutional tier is associated with hygiene differences but is an insufficient predictor at the document level; the evidence points to publication workflow design as the primary driver of exposure. The structural content analysis confirms that content explicitly removed before publication remains recoverable from the binary stream. The positive outliers in the dataset confirm that thorough sanitization is operationally achievable, making this a policy and workflow problem rather than a technological one.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
