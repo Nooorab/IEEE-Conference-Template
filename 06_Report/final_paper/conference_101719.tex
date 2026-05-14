@@ -168,11 +168,11 @@ To evaluate the extent to which sensitive information can be recovered from docu
 \subsection{Statistical Framework}
 
 \subsubsection{Tier Comparison}
-To quantitatively evaluate the disparity in metadata hygiene across the Swedish administrative landscape, we employed Pearson’s Chi-Square ($\chi^2$) tests of independence. The statistical matrix was constructed as a $3 \times 2$ contingency table, mapping the three organizational Tiers (Independent Variable) against a binary risk classification (Dependent Variable).
+To quantitatively evaluate the disparity in metadata hygiene across the Swedish administrative landscape, we employed a two-step procedure based on Pearson's Chi-Square ($\chi^2$) tests of independence. First, an omnibus $3 \times 2$ contingency table was constructed, mapping all three organizational Tiers (Independent Variable) against the binary risk classification (Dependent Variable) to test for global variance. Second, a series of post-hoc $2 \times 2$ pairwise comparisons (Tier 1 vs Tier 2, Tier 1 vs Tier 3, and Tier 2 vs Tier 3) were executed to identify specific inter-tier differences.
 
-For the purpose of statistical validity, we established a "Significant Risk" threshold by aggregating R2 and R3 occurrences. This aggregation ensured that all cells within the contingency matrix maintained an expected frequency of at least 5, satisfying the fundamental assumptions of the Chi-Square distribution.
+For the purpose of statistical validity, we established a ``Significant Risk'' threshold by aggregating R2 and R3 occurrences. This aggregation ensured that all cells within the contingency matrix maintained an expected frequency of at least 5, satisfying the fundamental assumptions of the Chi-Square distribution.
 
-The null hypothesis posited that metadata leakage rates are independent of an organization's Tier, while the alternative hypothesis asserted a systemic correlation between organizational mission and digital hygiene. All calculations were performed using Python's \texttt{scipy.stats} library, with the significance threshold set at $p < 0.05$.
+The null hypothesis posited that metadata leakage rates are independent of an organization's Tier, while the alternative hypothesis asserted a systemic correlation between organizational mission and digital hygiene. All calculations were performed using Python's \texttt{scipy.stats} library. To correct for the multiple comparison problem inherent in executing three pairwise tests on the same dataset, significance thresholds for the post-hoc tests were adjusted using a Bonferroni correction, setting the required alpha level at $p < 0.0167$.
 
 \subsubsection{Temporal Comparison}
 To evaluate the chronological evolution of metadata hygiene relative to the enactment of the Cybers\"{a}kerhetslagen, we executed a longitudinal Pearson's Chi-Square ($\chi^2$) test of independence. The statistical matrix was constructed as a $3 \times 2$ contingency table, mapping the three distinct temporal epochs (Pre-NIS2, NIS2 Preparation, and Post-Cybers\"{a}kerhetslagen) against the binary R2+ risk classification.
@@ -214,7 +214,7 @@ Figure \ref{fig:data_type_exposure} visualizes this breakdown. Personal names we
 
 \subsection{Sectoral Tier Comparison}
 
-As shown in Table \ref{tab:chi_tier}, Tier 2 (Systemic \& Structural Risk) exhibited the highest rate of significant risk exposure (56.7\%), compared to 49.5\% in Tier 1 (Strategic \& Sovereign Risk) and 37.9\% in Tier 3 (Societal \& Privacy Risk). Both comparisons against Tier 1 yielded statistically significant results, rejecting the null hypothesis.
+The omnibus Chi-Square test revealed a highly significant global difference in R2+ exposure across the three tiers ($\chi^2(2) = 63.75, p < 0.001$). As detailed in Table \ref{tab:chi_tier}, post-hoc pairwise comparisons confirm that Tier 2 (Systemic \& Structural Risk) exhibited the highest rate of significant risk exposure (56.7\%), followed by Tier 1 (Strategic \& Sovereign Risk, 49.5\%) and Tier 3 (Societal \& Privacy Risk, 37.9\%). All three pairwise comparisons yielded statistically significant results that comfortably survive the strict Bonferroni-corrected threshold ($p < 0.0167$), allowing us to reject the null hypothesis across all combinations.
 
 \begin{table}[htbp]
 \centering
@@ -226,8 +226,10 @@ As shown in Table \ref{tab:chi_tier}, Tier 2 (Systemic \& Structural Risk) exhib
 \hline
 Tier 1 vs. Tier 2 & 49.5\% vs 56.7\% & 10.29 & 0.0013 & ** \\
 Tier 1 vs. Tier 3 & 49.5\% vs 37.9\% & 24.62 & < 0.0001 & *** \\
+Tier 2 vs. Tier 3 & 56.7\% vs 37.9\% & 62.38 & < 0.0001 & *** \\
 \hline
-\multicolumn{5}{l}{\footnotesize Significance levels: * $p < 0.05$, ** $p < 0.01$, *** $p < 0.001$} \\
+\multicolumn{5}{l}{\footnotesize Significance evaluated against Bonferroni threshold $\alpha = 0.0167$} \\
+\multicolumn{5}{l}{\footnotesize Levels: * $p < 0.0167$, ** $p < 0.01$, *** $p < 0.001$} \\
 \end{tabular}
 \end{table}
 
@@ -367,7 +369,7 @@ These findings must be contextualised within the scope of the study. The documen
 Tullverket provides a positive counterexample: only 3 of its 121 sampled documents (2.5\%) contained incremental saves beyond linearization requirements, demonstrating that centralised, sanitised PDF export workflows that strip revision history are operationally achievable.
 
 \section{Limitations and Future Work}
-This study is limited to documents publicly available through official websites and online archives at the time of collection, explicitly excluding unpublished files and internal systems. The scope focuses strictly on PDF metadata and structural content leakage, rather than visible textual content or an organization's broader cybersecurity posture. Additionally, the Post-NIS2 temporal stratum is smaller and covers a shorter period than preceding strata; therefore, the observed downward trend in exposure must be replicated with a larger sample before a durable shift can be confirmed.
+This study is limited to documents publicly available through official websites and online archives at the time of collection, explicitly excluding unpublished files and internal systems. The scope focuses strictly on PDF metadata and structural content leakage, rather than visible textual content or an organization's broader cybersecurity posture. Methodologically, the purposive sampling frame implies that documents originating from the same authority share publication workflows, leading to intra-authority clustering rather than perfect statistical independence---a standard limitation in large-scale document analysis. Additionally, the Post-NIS2 temporal stratum is smaller and covers a shorter period than preceding strata; therefore, the observed downward trend in exposure must be replicated with a larger sample before a durable shift can be confirmed.
 
 Future research should investigate whether the unsanitized publication pipelines identified here also apply to documents released upon request under Offentlighetsprincipen, where visible redactions may inadvertently leave the incremental update history intact and recoverable. Furthermore, future work should assess the effectiveness of automated metadata sanitization tools within the Swedish public sector and expand the research scope to municipal-level authorities to uncover further patterns of exposure.
 \section{Conclusion}
