@@ -23,7 +23,7 @@
 \maketitle
 
 \begin{abstract}
-This study investigates metadata and structural content leakage in publicly available PDF documents from 30 Swedish public-sector authorities. Using an automated collection pipeline and ExifTool-based extraction, 2,876 documents were analyzed and classified using an R0--R3 risk taxonomy. Results reveal that 48.4\% of documents exhibit significant metadata exposure (R2 or R3), with significant variation across institutional tiers ($p < 0.001$). Longitudinal analysis across three legislative periods shows a statistically significant improvement in hygiene ($\chi^2 = 9.75$, $p = 0.0076$), yet 44.9\% of documents published after the enactment of Sweden's \textit{Cybers\"{a}kerhetslagen} continue to leak sensitive metadata. Furthermore, 41.4\% of documents contain incremental update layers; forensic analysis recovered verifiable text alterations---including deleted personal data and internal identifiers---from 228 of these cases. These findings highlight persistent regulatory lag and a systemic reliance on default, unsanitized document publication workflows within the Swedish public sector.
+This study investigates metadata and structural content leakage in publicly available PDF documents from 30 Swedish public-sector authorities. Using an automated collection pipeline and ExifTool-based extraction, 2,876 documents were analyzed and classified using an R0--R3 risk taxonomy. Results reveal that 48.4\% of documents exhibit significant metadata exposure (R2 or R3), with significant variation across institutional tiers ($p < 0.001$). Longitudinal analysis across three legislative periods reveals a statistically significant reduction in metadata exposure between the baseline and post-enactment periods, yet 44.9\% of documents published after the enactment of Sweden's \textit{Cybers\"{a}kerhetslagen} continue to leak sensitive metadata. Furthermore, 41.4\% of documents contain incremental update layers; forensic analysis recovered verifiable text alterations---including deleted personal data and internal identifiers---from 228 of these cases. These findings highlight persistent regulatory lag and a systemic reliance on default, unsanitized document publication workflows within the Swedish public sector.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -175,9 +175,9 @@ For the purpose of statistical validity, we established a ``Significant Risk'' t
 The null hypothesis posited that metadata leakage rates are independent of an organization's Tier, while the alternative hypothesis asserted a systemic correlation between organizational mission and digital hygiene. All calculations were performed using Python's \texttt{scipy.stats} library. To correct for the multiple comparison problem inherent in executing three pairwise tests on the same dataset, significance thresholds for the post-hoc tests were adjusted using a Bonferroni correction, setting the required alpha level at $p < 0.0167$.
 
 \subsubsection{Temporal Comparison}
-To evaluate the chronological evolution of metadata hygiene relative to the enactment of the Cybers\"{a}kerhetslagen, we executed a longitudinal Pearson's Chi-Square ($\chi^2$) test of independence. The statistical matrix was constructed as a $3 \times 2$ contingency table, mapping the three distinct temporal epochs (Pre-NIS2, NIS2 Preparation, and Post-Cybers\"{a}kerhetslagen) against the binary R2+ risk classification.
+To evaluate the chronological evolution of metadata hygiene relative to the enactment of the Cybers\"{a}kerhetslagen, we employed a two-step procedure consistent with our sectoral analysis. First, an omnibus $3 \times 2$ Chi-Square test of independence was executed, mapping the three distinct temporal epochs (Pre-NIS2, NIS2 Preparation, and Post-Cybers\"{a}kerhetslagen) against the binary R2+ risk classification. Second, post-hoc $2 \times 2$ pairwise comparisons were conducted between the temporal epochs to isolate specific periods of statistical difference.
 
-Consistent with our sectoral analysis, we utilized the aggregated ``Significant Risk'' (R2+) threshold to satisfy the Chi-Square requirement for expected cell frequencies ($E \geq 5$). The null hypothesis posited that metadata exposure rates are independent of the document publication period, indicating a lack of programmatic response to legislative pressure. Conversely, the alternative hypothesis asserted that document hygiene improved significantly in correlation with the Swedish legislative lifecycle. Significance was evaluated at the $p < 0.05$ threshold.
+Consistent with our sectoral analysis, we utilized the aggregated ``Significant Risk'' (R2+) threshold to satisfy the Chi-Square requirement for expected cell frequencies ($E \geq 5$). The null hypothesis posited that metadata exposure rates are independent of the document publication period. To control for the multiple comparison problem during post-hoc testing, significance thresholds were adjusted using a Bonferroni correction, setting the required alpha level at $p < 0.0167$.
 
 \subsection{Ethical Considerations}
 This study examines only PDF documents that were publicly available through official websites and online archives at the time of collection. Public availability does not remove the responsibility to handle data carefully, particularly where metadata may contain names, usernames, software details, or other organisational information.
@@ -283,24 +283,27 @@ Figure \ref{fig:temporal_risk} visualizes the risk distribution across the three
     \label{fig:temporal_risk}
 \end{figure}
 
-The statistical analysis (Table \ref{tab:chi_temporal}) reveals a statistically significant downward trend in R2+ risk exposure across the three temporal epochs: 52.2\% during the Pre-NIS2 baseline (2020--2023), 47.5\% during the NIS2 Preparation period (2024--2025), and 44.9\% after the enactment of the Cybers\"{a}kerhetslagen (Post-2026). The $3 \times 2$ Chi-Square test yielded $\chi^2 = 9.75$, $p = 0.0076$, which is significant at the $p < 0.01$ level.
+As shown in Table \ref{tab:chi_temporal}, the omnibus $3 \times 2$ Chi-Square test revealed a statistically significant difference in R2+ risk exposure across the three temporal epochs ($\chi^2(2) = 9.75, p = 0.0076$). Exposure dropped from 52.2\% during the Pre-NIS2 baseline (2020--2023), to 47.5\% during the NIS2 Preparation period (2024--2025), and 44.9\% after the enactment of the Cybers\"{a}kerhetslagen (Post-2026). 
 
-Therefore, we reject the null hypothesis. The data indicates a measurable reduction in metadata exposure over the three legislative periods. However, as discussed in Section VI, this statistical trend must be interpreted with caution, as even the most recent epoch still exhibits an exposure rate of 44.9\%, indicating that nearly half of all documents published after the enactment of the Cybers\"{a}kerhetslagen continue to leak significant metadata.
+However, post-hoc pairwise comparisons reveal that this reduction is only statistically significant when comparing the baseline directly to the post-enactment period ($\chi^2 = 8.45, p = 0.0036$). The interim reductions between Pre-NIS2 and NIS2 Prep ($p = 0.0302$), and between NIS2 Prep and Post-CSL ($p = 0.3111$), do not survive the strict Bonferroni-corrected threshold ($p < 0.0167$). 
+
+Therefore, while the data indicates a measurable reduction in metadata exposure driven by the legislative lifecycle, it is not a continuous, step-by-step downward trend. Furthermore, even the most recent epoch exhibits an exposure rate of 44.9\%, indicating that nearly half of all documents published after the enactment of the Cybers\"{a}kerhetslagen continue to leak significant metadata.
 
 \begin{table}[htbp]
 \centering
-\caption{Chi-Square Test Results: Temporal Comparison ($3 \times 2$ Test on R2+ Risk)}
+\caption{Chi-Square Test Results: Temporal Comparison (R2+ Risk)}
 \label{tab:chi_temporal}
-\begin{tabular}{|l|c|c|}
+\begin{tabular}{|l|c|c|c|c|}
 \hline
-\textbf{Temporal Epoch} & \textbf{R2+ Exposure} & \textbf{Documents} \\
+\textbf{Comparison} & \textbf{R2+ Exposure} & \textbf{$\chi^2$} & \textbf{p-value} & \textbf{Sig.} \\
 \hline
-2020--2023 (Pre-NIS2) & 52.2\% (549/1051) & 1051 \\
-2024--2025 (NIS2 Prep) & 47.5\% (528/1112) & 1112 \\
-2026--Present (Post-CSL) & 44.9\% (293/653) & 653 \\
+Pre-NIS2 vs. Prep & 52.2\% vs 47.5\% & 4.70 & 0.0302 & n.s. \\
+Prep vs. Post-CSL & 47.5\% vs 44.9\% & 1.03 & 0.3111 & n.s. \\
+Pre-NIS2 vs. Post & 52.2\% vs 44.9\% & 8.45 & 0.0036 & ** \\
 \hline
-\multicolumn{3}{l}{$\chi^2 = 9.75$, $df = 2$, $p = 0.0076$ **} \\
-\multicolumn{3}{l}{\footnotesize Significance levels: * $p < 0.05$, ** $p < 0.01$, *** $p < 0.001$} \\
+\multicolumn{5}{l}{\footnotesize Omnibus: $\chi^2(2) = 9.75, p = 0.0076$} \\
+\multicolumn{5}{l}{\footnotesize Pairwise significance evaluated against Bonferroni $\alpha = 0.0167$} \\
+\multicolumn{5}{l}{\footnotesize Levels: * $p < 0.0167$, ** $p < 0.01$, *** $p < 0.001$, n.s. = not sig.} \\
 \end{tabular}
 \end{table}
 
@@ -310,7 +313,7 @@ To address RQ3, the study evaluated the prevalence of incremental update layers 
 \subsubsection{Prevalence and Tier Distribution}
 The analysis revealed that structural content leakage is a significant phenomenon across the Swedish public sector, with 41.4\% (1,177/2,876) of all sampled documents containing at least one appended incremental update layer beyond their standard structural requirements.
 
-Tier 3 (Societal \& Privacy Risk) exhibited the highest rate of structural leakage at 48.4\%, followed by Tier 2 (Systemic \& Structural Risk) at 42.4\%, while Tier 1 (Strategic \& Sovereign Risk) maintained a lower rate of 34.7\%. 
+Descriptively, Tier 3 (Societal \& Privacy Risk) exhibited the highest observed rate of structural leakage at 48.4\%, followed by Tier 2 (Systemic \& Structural Risk) at 42.4\%, while Tier 1 (Strategic \& Sovereign Risk) maintained a lower rate of 34.7\%. 
 
 \subsubsection{Revision Bloat and Outlier Analysis}
 The depth of structural leakage was measured through "Revision Bloat," representing the total number of historical document states preserved within the binary stream. While the median document harbored only 2–3 versions, the study identified extreme outliers where document histories spanned dozens of internal revisions.
@@ -356,7 +359,7 @@ Security mandate is therefore associated with lower aggregate exposure but is an
 Beyond standard metadata fields, identifiers from Mendeley, Grammarly, and Articulate Storyline enable cross-document attribution across platforms---a class of exposure that standard sanitisation tools, typically configured for well-known fields, are unlikely to detect.
 
 \subsection{RQ2 --- Temporal Patterns and the NIS2 Trajectory}
-The temporal analysis reveals a statistically significant downward trend in R2+ exposure across the three legislative periods. However, the Post-NIS2 stratum contains substantially fewer documents than the preceding periods, as fewer publications had been released within this shorter window at the time of collection. The observed reduction may therefore reflect this compositional difference in addition to---or instead of---a genuine behavioural response to regulatory pressure. Future replication with a larger Post-NIS2 sample is necessary to confirm whether the trend is durable.
+The temporal analysis reveals a statistically significant reduction in R2+ exposure between the Pre-NIS2 baseline and the Post-Cybers\"{a}kerhetslagen enactment period. However, the Post-NIS2 stratum contains substantially fewer documents than the preceding periods, as fewer publications had been released within this shorter window at the time of collection. The observed reduction may therefore reflect this compositional difference in addition to---or instead of---a genuine behavioural response to regulatory pressure. Future replication with a larger Post-NIS2 sample is necessary to confirm whether the reduction is durable.
 Even interpreted conservatively, the 44.9\% post-enactment exposure rate indicates that legislative compliance does not translate automatically into document-level sanitisation practices. While \textit{Cybers\"{a}kerhetslagen} enforces systemic risk management and incident reporting, it prescribes no specific operational standards for document publication workflows. Consequently, the regulatory pressure creates a statistically visible improvement at the macro level, but remains practically insufficient to close granular leakage vectors.
 
 \subsection{RQ3 --- Recoverability of Unintended Information from Incremental Updates}
