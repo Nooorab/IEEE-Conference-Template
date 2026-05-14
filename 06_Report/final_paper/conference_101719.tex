@@ -318,7 +318,7 @@ Pre-NIS2 vs. Post & 52.2\% vs 44.9\% & 8.45 & 0.0036 & * \\
 To address RQ3, the study evaluated the prevalence of incremental update layers across the dataset using the linearization-aware detection method defined in Section~III.
 
 \subsubsection{Prevalence}
-The analysis revealed that structural content leakage is a significant phenomenon across the Swedish public sector, with 41.4\% (1,177/2,876) of all sampled documents containing at least one appended incremental update layer beyond their standard structural requirements.
+The analysis revealed that structural content leakage is a significant phenomenon across the Swedish public sector, with 41.6\% (1,196/2,876) of all sampled documents containing at least one appended incremental update layer beyond their standard structural requirements.
 
 \subsubsection{Revision Bloat and Outlier Analysis}
 The depth of structural leakage was measured through "Revision Bloat," representing the total number of historical document states preserved within the binary stream. While the median document harbored only 2–3 versions, the study identified extreme outliers where document histories spanned dozens of internal revisions.
@@ -333,7 +333,7 @@ Three documents were identified as "extreme outliers" harboring more than 50 ver
 
 
 \subsubsection{Content Restoration and Verifiable Text Alterations}
-While the technical presence of incremental updates was significant (1,177 documents), the forensic accessibility of previous content varies. To assess the severity of this leakage, a deep forensic extraction was performed. The analysis successfully recovered verifiable text alterations (unique ADDED/REMOVED string pairs) from 228 documents. This demonstrates that for nearly 8\% of the entire dataset, substantive edits, deleted text, or prior drafts remain accessible to the public.
+While the technical presence of incremental updates was significant (1,196 documents), the forensic accessibility of previous content varies. To assess the severity of this leakage, a deep forensic extraction was performed. The analysis successfully recovered verifiable text alterations (unique ADDED/REMOVED string pairs) from 228 documents. This demonstrates that for nearly 8\% of the entire dataset, substantive edits, deleted text, or prior drafts remain accessible to the public.
 
 Three representative cases illustrate the range of recoverable content:
 
@@ -368,7 +368,7 @@ The temporal analysis reveals a statistically significant reduction in R2+ expos
 Even interpreted conservatively, the 44.9\% post-enactment exposure rate indicates that legislative compliance does not translate automatically into document-level sanitisation practices. While \textit{Cybers\"{a}kerhetslagen} enforces systemic risk management and incident reporting, it prescribes no specific operational standards for document publication workflows. Consequently, the regulatory pressure creates a statistically visible improvement at the macro level, but remains practically insufficient to close granular leakage vectors.
 
 \subsection{RQ3 --- Recoverability of Unintended Information from Incremental Updates}
-Of the 1,177 documents containing true incremental update layers, forensic extraction identified verifiable content changes in 228. The majority were editorial, carrying limited forensic significance in isolation. Among the 228, 27 contained substantive removals---spanning personal data handling descriptions, named individuals, and internal production instructions---demonstrating that the incremental update mechanism can preserve precisely the information that authors intended to retract.
+Of the 1,196 documents containing true incremental update layers, forensic extraction identified verifiable content changes in 228. The majority were editorial, carrying limited forensic significance in isolation. Among the 228, 27 contained substantive removals---spanning personal data handling descriptions, named individuals, and internal production instructions---demonstrating that the incremental update mechanism can preserve precisely the information that authors intended to retract.
 
 The 41.4\% prevalence rate suggests that ``saving'' rather than ``exporting'' is a common publication workflow, and that many organisations do not flatten or regenerate PDFs before publication. The extreme outliers illustrate the depth of this problem: a document containing 130 version markers means that each point where a user modified the file---correcting financial figures, changing phrasing, or removing sensitive placeholders---remains preserved in the binary stream because no final flattening or sanitisation was applied.
 
