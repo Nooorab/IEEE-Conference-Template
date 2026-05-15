@@ -60,10 +60,8 @@ The following sub-questions support the main research question:
     \item \textbf{RQ3}: To what extent is unintended information recoverable from the incremental update history of publicly available Swedish public-sector PDFs?
 \end{itemize}
 
-\subsection{Scope and Delimitations}
+\subsection{Scope}
 This study addresses this gap by analysing metadata and hidden version history in publicly available PDF documents from Swedish public-sector organisations. The analysis examines 2,876 PDF documents collected from 30 Swedish government agencies and institutions in order to identify patterns of information exposure, assess what metadata reveals about internal systems and workflows, and evaluate the implications from both cybersecurity and digital forensic perspectives.
-
-The scope of the study is limited to documents that were publicly available through official websites and online archives at the time of collection. Unpublished documents and files stored in internal systems that are not publicly accessible are therefore excluded. The study also focuses specifically on PDF metadata and structural content leakage, rather than the visible textual content of the documents or the broader cybersecurity posture of each organisation.
 
 \section{Related Work}
 The risks associated with metadata embedded in publicly distributed documents have been documented across several empirical studies. This body of work establishes both the technical mechanisms through which exposure occurs and the organisational conditions under which it persists.
@@ -170,7 +168,7 @@ In this study, document metadata is treated as a passive information exposure fa
     \item \textbf{R3 (High Risk):} Data elements directly charting internal network topographies or system schemas. Absolute file pathways mapped to local C: drives, mapped network shares, internal server IP schemas, organizational Active Directory usernames, or hidden architectural tokens.
 \end{itemize}
 
-Classification was automated using a Python script that applied deterministic pattern-matching rules to each extracted field--value pair, ensuring consistent and reproducible assignment across all 66,989 metadata records.
+Classification was automated using a \texttt{Python} script that applied deterministic pattern-matching rules to each extracted field--value pair, ensuring consistent and reproducible assignment across all 66,989 metadata records.
 
 \subsubsection{Structural Content Leakage} 
 To evaluate the extent to which sensitive information can be recovered from document histories, we utilized a qualitative forensic audit focused on "Revision Bloat" and substantive content restoration. Recovery success was measured through a three-stage filter: technical presence of incremental saves, forensic accessibility, and verifiably recovered text alterations (unique ADDED/REMOVED string pairs). To analyze the depth of the exposure, we identified "outlier" documents exhibiting extreme revision bloat, defined as documents harboring more than 50 hidden versions.
@@ -276,9 +274,9 @@ FOI exhibited the highest personal name exposure of any authority in the dataset
 
 Regeringskansliet exposed the complete file path of its print production server in one document, alongside an individual author name. Across its sample, 45 Author field entries contained internal investigation dossier numbers linking documents to named government inquiries.
 
-Polismyndigheten contained a high number of R3-classified EmbeddedHref fields, including a ``polisen2015'' directory reference and a file prefixed ``rps\_test''---artefacts of Rikspolisstyrelsen, the predecessor authority dissolved in 2015, persisting in current templates. One Author entry combined individual attribution with unit identification: ``Anna Andersson (NOA),'' referencing the National Operations Department.
+Polismyndigheten contained a high number of R3-classified EmbeddedHref fields, including a ``polisen2015'' directory reference and a file prefixed ``rps\_test'', artefacts of Rikspolisstyrelsen, the predecessor authority dissolved in 2014, persisting in current templates. One Author entry combined individual attribution with unit identification: ``Anna Andersson (NOA),'' referencing the National Operations Department.
 
-Despite Folkh\"alsomyndigheten's low overall exposure, a single ArticulatePath field exposed ``http://portal.fohm.local/''---an internal infrastructure URL.
+Despite Folkh\"alsomyndigheten's low overall exposure, a single ArticulatePath field exposed ``http://portal.fohm.local/'', an internal infrastructure URL.
 
 Across the dataset, third-party platform identifiers from Mendeley, Grammarly, and Articulate Storyline were found embedded in documents from authorities with otherwise clean metadata profiles.
 
@@ -297,7 +295,7 @@ As shown in Table \ref{tab:chi_temporal}, the omnibus $3 \times 2$ Chi-Square te
 
 However, post-hoc pairwise comparisons reveal that this reduction is only statistically significant when comparing the baseline directly to the post-enactment period ($\chi^2 = 8.45, p = 0.0036$). The interim reductions between Pre-NIS2 and NIS2 Prep ($p = 0.0302$), and between NIS2 Prep and Post-CSL ($p = 0.3111$), do not survive the strict Bonferroni-corrected threshold ($p < 0.0167$). 
 
-Therefore, while the data indicates a measurable reduction in metadata exposure driven by the legislative lifecycle, it is not a continuous, step-by-step downward trend. Furthermore, even the most recent epoch exhibits an exposure rate of 44.9\%, indicating that nearly half of all documents published after the enactment of the Cybers\"{a}kerhetslagen continue to leak significant metadata.
+Furthermore, even the most recent epoch exhibits an exposure rate of 44.9\%, indicating that nearly half of all documents published after the enactment of the Cybers\"{a}kerhetslagen continue to leak significant metadata.
 
 \begin{table}[htbp]
 \centering
